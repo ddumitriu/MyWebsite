@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Italiana:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Basic:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A. Daria Dumitriu-I.</title>
+    <style>
+        /* @font-face {
+            font-family: 'Latin Modern Roman';
+            src: url('https://cdnjs.cloudflare.com/ajax/libs/latin-modern/1.10.0/latin-modern-roman/latin-modern-roman-webfont.woff2') format('woff2');
+        } */
+
+        #backgroundvideo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto; /* 140vw */
+            height: auto; /* 1550px */
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            object-fit: cover; 
+            overflow: hidden; }
+        body {
+            /* font-family: 'Latin Modern Roman', serif; */
+            font-family: 'EB+Garamond', serif;
+            font-size: 21px;
+            line-height: 1.5; 
+            background-image: url('background_mobile.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        strong {
+            font-weight: 600; /* or 600 for medium-bold */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600; /* Default weight for headers */
+        }
+        img {
+            float: right;
+            margin: 10px;
+            height: auto;
+            width: 150px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.95); /* White with transparency */
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+        }
+        h1 {
+            padding-top: 15px; /* Adds space inside the element, effectively lowering it */
+            margin-bottom: 15px; /* Keeps space below the header */
+            text-align: left;
+            font-size: 30px;
+        }
+
+        h2 {
+            text-align: left;
+            font-size: 25px;
+        }
+
+        h3 {
+            text-align: left;
+            font-size: 20px;
+            font-weight: normal; /* Ensures the text is not bold */
+            margin-top: -0.1px; /* Adjust this value to control negative vertical space */
+        }
+
+        .section {
+            margin-bottom: 10px;
+        }
+        .section h2 {
+            border-bottom: 2px solid #ccc;
+            /* border-bottom: linear-gradient(to right, #71001c, #a30021, #cc0f2c, #e45145, #f57f63, #ffb799, #73bfdc, #239bca, #067ab9, #00579a, #003065); */
+            padding-bottom: 5px;
+            cursor: pointer;
+        }
+        .section p, .section ul {
+            text-align: justify;
+            font-size: 0.9em; /* Smaller font size for section content */
+        }
+        .publications, .projects, .conferences, .courses, .hobbies {
+            list-style: none;
+            padding: 0;
+        }
+        .publications li, .projects li, .conferences li {
+            margin-bottom: 10px;
+        }
+        .arrow-small {
+        font-size: 0.6em; /* Adjust size as needed */
+        vertical-align: middle; /* Aligns the icon vertically in the middle with text */
+        margin-right: 10px; /* Space between the arrow and the text */
+        }
+
+        /* Color scheme */
+        .orange { color: #ffb799; }
+        .red1 { color: #71001c; }
+        .red2 { color: #a30021; }
+        .red3 { color: #cc0f2c; }
+        .red4 { color: #e45145; }
+        .red5 { color: #f57f63; }
+        .blue1 { color: #003065; }
+        .blue2 { color: #00579a; }
+        .blue3 { color: #067ab9; }
+        .blue4 { color: #239bca; }
+        .blue5 { color: #73bfdc; }
+        .black { color: #000000; }
+
+        .link-as-text {
+            color: black; /* Set text color to black */
+            text-decoration: none; /* Remove underline */
+        }
+
+        .link-regular {
+            color: #00579a; /* Set your desired text color here */
+            text-decoration: underline; /* Ensure underline */
+        }
+
+        .link-regular:hover {
+            color: #00579a; /* Hover color for the link */
+        }
+
+        .text-content {
+            display: flex;
+            flex-direction: column;
+        }
+        .text-content h1 {
+            margin-top: 0; 
+            margin-bottom: 5px; 
+        }
+        .text-content h2 {
+            margin-top: 0; 
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            text-align: left;
+        }
+        .header img {
+            width: 120px;
+            height: auto;
+            margin-right: 20px;
+        }
+        .header .text-content {
+            display: flex;
+            flex-direction: column;
+        }
+        .header .red2 {
+            color: red2;
+            margin: 0;
+        }
+        .header h2 {
+            margin: 0;
+        }
+
+        /* Header styling for mobile devices */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .header img {
+                margin: 0 0 10px 0;
+                width: 150px;
+                height: auto;
+            }
+            .header .text-content {
+                align-items: center;
+            }
+            .header .red2, .header h2, .header h3 {
+                text-align: center;
+            }
+            #backgroundvideo {
+                display: block;
+            }
+            .section .square {
+                display: none; /* Hide the original logos */
+            }
+            .mobile-logos {
+                display: flex; /* Show the new logos container */
+                justify-content: center; /* Center-align the logos */
+                margin-top: 20px;
+            }
+            .mobile-logos img {
+                height: 62px;
+                width: auto;
+                margin: 0 10px; /* Add spacing between images */
+            }
+
+            .section ul, .section li, .section a {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- <header id="header">
+        Desktop Header
+    </header> -->
+
+    <video autoplay muted loop id="backgroundvideo">
+        <source src="background_video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- <img id="mobileImage" src="lattice_colormap.png"> -->
+
+
+    <div class="container">
+        <header class="header" id="header">
+            <img src="mypicture.png" alt="Profile Picture">
+            <div class="text-content">
+                <h1 class="red2">Alexandra-Daria Dumitriu-Iovanescu</h1>
+                <h2>Theoretical Condensed Matter Physics Group</h2>
+                <h3>Department of Physics and Astronomy PGR Representative</h3>
+            </div>
+        </header>
+
+        <div class="section">
+            <h2 class="black">Research Interests</h2>
+            <p>My research focuses on the interplay between topology, geometry, and correlations in two-dimensional materials, examining how electron-electron interactions affect charge and heat transport in systems with topological features.
+                Typically, currents follow an applied electric field or temperature gradient, but in systems with an applied magnetic field or nontrivial band topology, transverse flows also occur.
+                I study Dirac materials like graphene (with broken inversion and time-reversal symmetry) and Chern insulators, which showcase exotic properties due to their two-dimensional nature, relativistic-like dispersion, and extreme tunability.
+                Using many-body quantum-field-theory techniques, I explore the impact of electron-electron interactions in these systems.</p>
+        </div>
+
+        <div class="section">
+            <h2 class="black">Publications</h2>
+            <ul class="publications">
+                <li>A. Daria Dumitriu-I., Feng Liu, Alexander E. Kazantsev, Alessandro Principi<br>
+                    <strong><em>"Anomalous thermoelectric Hall response of interacting 2D Dirac fermions"</em><br>
+                    <a href="https://arxiv.org/abs/2603.25705" target="_blank" class="link-regular">arXiv:2603.25705 (2026)</a></strong></li>
+                <li>Feng Liu, A. Daria Dumitriu-I., Alessandro Principi<br>
+                    <strong><em>"Broken Lorentz symmetry and violation of the Wiedemann-Franz law in topological insulators"</em><br>
+                    <a href="https://journals.aps.org/prb/abstract/10.1103/rm7z-l1md" target="_blank" class="link-regular">Physical Review B 112, 205404 (2025)</a></strong></li>
+                <li>Feng Liu, A. Daria Dumitriu-I., Alessandro Principi<br>
+                    <strong><em>"No bulk thermal currents in massive Dirac fermions"</em><br>
+                    <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.110.L081404" target="_blank" class="link-regular">Physical Review B 110, L081404 (2024)</a></strong></li>
+                <li>A. Daria Dumitriu-I., Darius-A. Deaconu, Alexander E. Kazantsev, and Alessandro Principi<br>
+                    <strong><em>"First-order effect of electron-electron interactions on the anomalous Hall conductivity of massive Dirac fermions"</em><br>
+                    <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.165429" target="_blank" class="link-regular">Physical Review B 109, 165429 (2024)</a></strong></li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="black">Conferences and Schools</h2>
+            <ul class="conferences">
+                <li><a href="https://cinerama.dipc.org/" target="_blank" class="link-regular"><strong>CINERAMA25</strong></a> -  San Sebastian, Spain, 26-30 May 2025</li>
+                <li><a href="https://summit.aps.org/" target="_blank" class="link-regular"><strong>Global Physics Summit</strong></a> -  Anaheim, California, 16-21 March 2025</li>
+                <li><a href="https://cmd31.sci-meet.net/" target="_blank" class="link-regular"><strong>CMD31</strong></a> -  Braga, Portugal, 1-6 September 2024</li>
+                <li><a href="https://www.ctqmat.de/en/events/2023-09-27-second-fall-school-topological-quantum-matter" target="_blank" class="link-regular"><strong>Topological Quantum Matter Fall School</strong></a> -  Leipzig, Germany, 27-29 September 2023</li>
+                <li><a href="http://tms23.dipc.org/" target="_blank" class="link-regular"><strong>Topological Matter School</strong></a> -  San Sebastian, Spain, 20-25 August 2023</li>
+                <li><a href="https://www.grapheneconf.com/2023/" target="_blank" class="link-regular"><strong>Graphene2023</strong></a> -  Manchester, England, 27-30 June 2023</li>
+                <li><a href="https://indico.ictp.it/event/10062/" target="_blank" class="link-regular"><strong>Conference and Advanced School on Low-Dimensional Quantum Systems</strong></a> - Santiago, Chile, 13-24 March 2023</li>
+                <li><a href="https://www.iop.org/events/cmd-29" target="_blank" class="link-regular"><strong>CMD29</strong></a> - Manchester, England, 21-26 August 2022</li>
+                <li><a href="https://physicsbythelake.org/" target="_blank" class="link-regular"><strong>Physics by the Lake Summer School</strong></a> - Stirling, Scotland, 1-12 August 2022</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2 class="black">Awards & Certifications</h2>
+            <ul class="courses">
+                <li><strong>Associate Fellow (AFHEA)</strong></a> - awarded by Advance HE (formerly the Higher Education Academy), April 2025</li>
+                <li><strong>Best Poster Prize</strong></a> - awarded at the Annual PGR Conference, Department of Physics, University of Manchester, September 2024</li>
+                <li><strong>Best Talk Prize</strong></a> - awarded at the Annual CDT Conference, Graphene NowNano CDT, Manchester, June 2024</li>
+                <li><strong>Hatfield-Heginbottom Scholarship</strong></a> - awarded to the best performing student in the 3rd year, University of Manchester, August 2020</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="black">Teaching Assistant</h2>
+            <ul class="courses">
+                <li><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10101#course-unit-details" target="_blank" class="link-regular"><strong>Dynamics</strong></a> - First-year weekly workshop (September-December 2021, 2022, 2023)</li>
+                <li><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10071#course-unit-details" target="_blank" class="link-regular"><strong>Mathematics 1</strong></a> - First-year weekly workshop (September-December 2021, 2022, 2023)</li>
+                <li><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10180#course-unit-details" target="_blank" class="link-regular"><strong>General Laboratory</strong></a> - First-year laboratory experiment (September-May 2022, 2023)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="black"><i class="fas fa-chevron-right arrow-small"></i>CDT Projects</h2>
+            <ul class="projects">
+                <li><a href="pdfs/LAB1_report.pdf" target="_blank" class="link-regular"><strong> CDT Laboratory Project 1</strong></a> - Graphene/2D Materials Based Field-Effect Devices and Optoelectronics</li>
+                <li><a href="pdfs/LAB2_report.pdf" target="_blank" class="link-regular"><strong> CDT Laboratory Project 2</strong></a> - Low Temperature Electronic Measurements with Device Fabrication</li>
+                <li><a href="pdfs/EBL1_report.pdf" target="_blank" class="link-regular"><strong> CDT Enquiry-based Learning Project 1</strong></a> - Topological Properties of Electronic Bands in 2D Materials</li>
+                <li><a href="pdfs/EBL2_report.pdf" target="_blank" class="link-regular"><strong> CDT Enquiry-based Learning Project 2</strong></a> - 2D Optical Modulators</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="black"><i class="fas fa-chevron-right arrow-small"></i>Undergraduate Projects</h2>
+            <ul class="projects">
+                <li><a href="pdfs/MPhys - Second Semester.pdf" target="_blank" class="link-regular"><strong> MPhys Project - Second Semester</strong></a></li>
+                <li><a href="pdfs/MPhys - First Semester.pdf" target="_blank" class="link-regular"><strong> MPhys Project - First Semester</strong></a></li>
+                <li><a href="pdfs/Theory Computing Project.pdf" target="_blank" class="link-regular"><strong> Theory Computing Project (Second Year)</strong></a> - Numerical Solutions to the One-dimensional Schrodinger's Equation</li>
+                <li><a href="pdfs/Second Year Vacation Essay.pdf" target="_blank" class="link-regular"><strong> Vacation Essay (Second Year)</strong></a> - The One-Dimensional Transverse Ising Model</li>
+                <li><a href="pdfs/First Year Vacation Essay.pdf" target="_blank" class="link-regular"><strong> Vacation Essay (First Year)</strong></a> - Quantum Cryptography and The BB84 Protocol</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2 class="black">Hobbies</h2>
+            <p>I have a variety of hobbies and interests that keep me busy and entertained. I’m really into sports, especially winter ones like skiing and ice skating, 
+                but hiking and trekking are my absolute favorites. I also enjoy playing squash and indoor bouldering. In my free time, I love solving puzzles, 
+                playing strategy board games, attending live musicals, and reading dystopian novels. I also have quite a large collection of 
+                <a href="HRC_logo_original_colours.png" target="_blank" class="link-as-text"> Hard Rock Cafe T-shirts</a>. 
+                I'm passionate about 3D printing, and I really enjoy participating in outreach activities.</p>
+        </div>
+
+        <div class="section">
+            <h2 class="black">Contact</h2>
+                <div class="square">
+                <img src="UoM.png" alt="University of Manchester">
+                <img src="NowNano.png" alt="Graphene NowNano">
+                </div>
+                <p><a href="mailto:alexandra-daria.dumitriu-iovanescu@manchester.ac.uk" target="_blank" class="link-regular"><strong>alexandra-daria.dumitriu-iovanescu@manchester.ac.uk</strong></a><br>
+                    <a href="https://www.linkedin.com/in/alexandra-daria-dumitriu-iovanescu/" target="_blank" class="link-regular"><strong>LinkedIn Profile</strong></a><br>
+                    Schuster Building, Office 7.27</p>
+        </div>
+        
+        <div class="mobile-logos">
+            <img src="UoM.png" alt="University of Manchester">
+            <img src="NowNano.png" alt="Graphene NowNano">
+        </div>
+
+    <script>
+        document.querySelectorAll('.section h2').forEach((header) => {
+            const content = header.nextElementSibling;
+            if (header.textContent === 'CDT Projects' || header.textContent === 'Undergraduate Projects') {
+                header.addEventListener('click', () => {
+                    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                });
+                content.style.display = 'none'; // Hide initially
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function updateHeader() {
+                const header = document.getElementById('header');
+                const nameElement = header.querySelector('.red2');
+                const groupElement = header.querySelector('h2');
+                
+                if (window.innerWidth <= 768) {
+                    // Update text for mobile view
+                    nameElement.innerHTML = 'Alexandra-Daria<br>Dumitriu-Iovanescu';
+                    groupElement.innerHTML = 'Theoretical Condensed<br>Matter Physics Group';
+                    header.classList.add('mobile');
+                } else {
+                    // Reset text for desktop view
+                    nameElement.textContent = 'Alexandra-Daria Dumitriu-Iovanescu';
+                    groupElement.textContent = 'Theoretical Condensed Matter Physics Group';
+                    header.classList.remove('mobile');
+                }
+            }
+
+            updateHeader();
+            window.addEventListener('resize', updateHeader);
+        });
+    </script>
+
+<script>
+    function isMobileDevice() {
+        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var backgroundvideo = document.getElementById('backgroundvideo');
+        
+        if (isMobileDevice()) {
+            backgroundvideo.style.display = 'none';
+        } else {
+            backgroundvideo.style.display = 'block';
+        }
+    });
+</script>
+
+<script>
+    // Function to show/hide mobile logos based on screen width
+    function handleResize() {
+        var mobileLogos = document.querySelector('.mobile-logos');
+        var isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+        if (isMobile) {
+            mobileLogos.style.display = 'flex'; // Show on mobile
+        } else {
+            mobileLogos.style.display = 'none'; // Hide on larger screens
+        }
+    }
+
+    // Initial check
+    handleResize();
+
+    // Add event listener to handle resizing
+    window.addEventListener('resize', handleResize);
+</script>
+</body>
+</html>
