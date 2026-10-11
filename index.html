@@ -10,36 +10,318 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#f7f2f1;--paper-2:#faf7f5;--ink:#13273c;--muted:#536477;--line:#d9ced0;--blue:#176b99;--cyan:#1698c2;--red:#b42b43;--serif:'EB Garamond',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;--mono:'IBM Plex Mono',monospace}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:74px}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
-button,input,textarea{font:inherit}a{color:inherit}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:5px}
-.skip-link{position:absolute;top:-5rem;left:1rem;z-index:30;padding:.75rem 1rem;background:white}.skip-link:focus{top:1rem}
-.shell{width:min(100% - clamp(40px,10vw,176px),1430px);margin-inline:auto}
-.masthead{min-height:76px;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:20px;justify-content:space-between;padding:0 clamp(22px,5vw,88px);border-bottom:1px solid rgba(21,57,79,.13);background:linear-gradient(150deg,rgba(22,152,194,.14),rgba(180,43,67,.10)),var(--paper);backdrop-filter:blur(18px)}
-.wordmark{text-decoration:none;font-weight:700;letter-spacing:.13em;font-size:.92rem;white-space:nowrap}
-.mast-right{display:flex;align-items:center;gap:clamp(11px,1.6vw,23px)}
-/* Profile icons: red at rest, soft circular emphasis on hover */
-.social-links{display:flex;align-items:center;gap:clamp(10px,1.2vw,19px)}
-.social-links a{display:grid;place-items:center;width:42px;height:42px;flex:0 0 42px;padding:0;border:1px solid transparent;border-radius:50%;background:transparent;color:var(--red);text-decoration:none;font-family:var(--mono);font-size:12px;font-weight:600;transition:background .22s,border-color .22s,transform .22s}
-.social-links a:hover{background:rgba(180,43,67,.09);border-color:rgba(180,43,67,.48);transform:translateY(-1px)}
-.social-links a:focus-visible{background:rgba(180,43,67,.09);border-color:var(--red)}
-.social-links svg{height:19px;width:19px;fill:currentColor}
 
-.menu-button{background:none;color:var(--ink);border:1px solid var(--line);border-radius:2px;padding:10px 12px;cursor:pointer;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase}
-.site-nav{position:absolute;right:clamp(22px,5vw,88px);top:calc(100% + 1px);width:min(335px,calc(100vw - 42px));padding:12px 20px;background:var(--paper-2);border:1px solid var(--line);box-shadow:0 20px 50px rgba(19,39,60,.08)}
-.site-nav[hidden]{display:none}.site-nav a{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--line);text-decoration:none;font-size:.88rem}.site-nav a:last-child{border:0}.site-nav a:hover{color:var(--blue)}
-.panel{min-height:100svh;scroll-snap-align:start;position:relative;display:flex;flex-direction:column;padding:clamp(86px,11vw,156px) 0 35px;border-top:1px solid rgba(21,57,79,.10)}
-.panel:nth-of-type(even){background:var(--paper-2)}
-.panel-content{flex:1}
-.panel-head{display:flex;justify-content:space-between;gap:40px;align-items:end;border-bottom:1px solid var(--line);padding-bottom:35px;margin-bottom:clamp(38px,6vw,82px)}
-.kicker,.section-number,.archive-label,.tiny,.eyebrow{font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--red)}
-.panel h2{font-family:var(--serif);font-size:clamp(3rem,6vw,5rem);font-weight:400;line-height:.98;letter-spacing:-.045em;margin:15px 0 0}
-.panel h2 em{font-weight:400;color:var(--blue)}.section-desc{max-width:340px;font-size:1rem;line-height:1.7;color:var(--muted);margin:0}
-.next-link{align-self:flex-start;margin-top:clamp(36px,7vw,85px);text-decoration:none;display:inline-flex;gap:18px;align-items:center;padding:12px 0;border-bottom:1px solid var(--blue);font-family:var(--mono);font-size:.79rem;letter-spacing:.03em;color:var(--blue)}.next-link span{font-size:1.4rem;transition:transform .25s}.next-link:hover span{transform:translateY(5px)}
-/* Landing section: preserve graphene as full-width background, with the original user-selected off-white gradient. */
-#home{min-height:calc(100svh - 76px);position:relative;scroll-snap-align:start;margin:auto;overflow:clip;isolation:isolate;display:flex;flex-direction:column}
+/*
+ * PORTFOLIO STYLESHEET
+ *
+ * Sections are grouped by page area. Responsive overrides live near the end.
+ * Existing visual values, transitions and animation timings are preserved.
+ *
+ * NOTE: The source contains two transition values written as *background*.
+ * They are preserved literally rather than silently changing hover behaviour.
+ * If these are accidental Markdown artefacts, correct them separately later.
+ *
+ * NOTE: The original .archive-label rule had an unmatched comment terminator
+ * and did not apply. It remains documented but inactive in section 11.
+ */
+
+/* ==========================================================================
+   01. DESIGN TOKENS & GLOBAL STYLES
+   Colours, typography, resets, focus states and page width.
+   ========================================================================== */
+
+:root {
+    --paper: #f7f2f1;
+    --paper-2: #faf7f5;
+    --ink: #13273c;
+    --muted: #536477;
+    --line: #d9ced0;
+    --blue: #176b99;
+    --cyan: #1698c2;
+    --red: #b42b43;
+    --serif: "EB Garamond",Georgia,serif;
+    --sans: "DM Sans",Arial,sans-serif;
+    --mono: "IBM Plex Mono",monospace;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 74px;
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+button,input,textarea {
+    font: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 5px;
+}
+
+.skip-link {
+    position: absolute;
+    top: -5rem;
+    left: 1rem;
+    z-index: 30;
+    padding: .75rem 1rem;
+    background: white;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+.shell {
+    width: min(100% - clamp(40px,10vw,176px),1430px);
+    margin-inline: auto;
+}
+
+
+/* ==========================================================================
+   02. HEADER, SOCIAL LINKS & NAVIGATION
+   Sticky masthead, icon buttons and dropdown menu.
+   ========================================================================== */
+
+.masthead {
+    min-height: 76px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 0 clamp(22px,5vw,88px);
+    border-bottom: 1px solid rgba(21,57,79,.13);
+    background: linear-gradient(150deg,rgba(22,152,194,.14),rgba(180,43,67,.10)),var(--paper);
+    backdrop-filter: blur(18px);
+}
+
+.wordmark {
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: .13em;
+    font-size: .92rem;
+    white-space: nowrap;
+}
+
+.mast-right {
+    display: flex;
+    align-items: center;
+    gap: clamp(11px,1.6vw,23px);
+}
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(10px,1.2vw,19px);
+}
+
+.social-links a {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--red);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    transition: *background* .22s,border-color .22s,transform .22s;
+}
+
+.social-links a:hover {
+    background: rgba(180,43,67,.09);
+    border-color: rgba(180,43,67,.48);
+    transform: translateY(-1px);
+}
+
+.social-links a:focus-visible {
+    background: rgba(180,43,67,.09);
+    border-color: var(--red);
+}
+
+.social-links svg {
+    height: 19px;
+    width: 19px;
+    fill: currentColor;
+}
+
+.menu-button {
+    background: none;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: .76rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.site-nav {
+    position: absolute;
+    right: clamp(22px,5vw,88px);
+    top: calc(100% + 1px);
+    width: min(335px,calc(100vw - 42px));
+    padding: 12px 20px;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 50px rgba(19,39,60,.08);
+}
+
+.site-nav[hidden] {
+    display: none;
+}
+
+.site-nav a {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    font-size: .88rem;
+}
+
+.site-nav a:last-child {
+    border: 0;
+}
+
+.site-nav a:hover {
+    color: var(--blue);
+}
+
+.site-nav a:hover {
+    text-decoration: none;
+}
+
+
+/* ==========================================================================
+   03. SHARED SECTION STYLES
+   Snap-aligned panels, section headings and next-section links.
+   ========================================================================== */
+
+.panel {
+    min-height: 100svh;
+    scroll-snap-align: start;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(86px,11vw,156px) 0 35px;
+    border-top: 1px solid rgba(21,57,79,.10);
+}
+
+.panel:nth-of-type(even) {
+    background: var(--paper-2);
+}
+
+.panel-content {
+    flex: 1;
+}
+
+.panel-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    align-items: end;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 35px;
+    margin-bottom: clamp(38px,6vw,82px);
+}
+
+.kicker,.section-number,.archive-label,.tiny,.eyebrow {
+    font-family: var(--mono);
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--red);
+}
+
+.panel h2 {
+    font-family: var(--serif);
+    font-size: clamp(3rem,6vw,5rem);
+    font-weight: 400;
+    line-height: .98;
+    letter-spacing: -.045em;
+    margin: 15px 0 0;
+}
+
+.panel h2 em {
+    font-weight: 400;
+    color: var(--blue);
+}
+
+.section-desc {
+    max-width: 340px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin: 0;
+}
+
+.next-link {
+    align-self: flex-start;
+    margin-top: clamp(36px,7vw,85px);
+    text-decoration: none;
+    display: inline-flex;
+    gap: 18px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--blue);
+    font-family: var(--mono);
+    font-size: .79rem;
+    letter-spacing: .03em;
+    color: var(--blue);
+}
+
+.next-link span {
+    font-size: 1.4rem;
+    transition: transform .25s;
+}
+
+.next-link:hover span {
+    transform: translateY(5px);
+}
+
+
+/* ==========================================================================
+   04. HOME / HERO
+   Hero copy, static poster, Three.js canvas and scroll link.
+   ========================================================================== */
+
+#home {
+    min-height: calc(100svh - 76px);
+    position: relative;
+    scroll-snap-align: start;
+    margin: auto;
+    overflow: clip;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+}
+
 .hero {
     position: relative;
     flex: 1;
@@ -49,12 +331,65 @@ button,input,textarea{font:inherit}a{color:inherit}a:focus-visible,button:focus-
     display: flex;
     align-items: center;
 }
-.copy{position:relative;z-index:3;width:60%;min-height:inherit;display:flex;flex-direction:column;justify-content:center;padding:clamp(45px,7vw,120px) 0 80px clamp(22px,5vw,88px);pointer-events:none}
-.copy>*{pointer-events:auto}.eyebrow{color:var(--red);display:flex;align-items:center;gap:14px}
-/* .eyebrow::before{content:"";width:25px;height:1px;background:var(--red)} */
-h1{font-family:var(--serif);font-weight:500;font-size:clamp(3.5rem,5.8vw,6.7rem);line-height:.98;letter-spacing:-.055em;margin:32px 0 28px;max-width:900px}h1 em{font-weight:400;color:var(--blue)}
-.specialities{font-size:clamp(14px,1.4vw,20px);font-weight:600;line-height:1.7;letter-spacing:.005em;color:var(--ink);width:max-content;max-width:calc(100vw - 44px);white-space:nowrap}
-.intro{width:660px;max-width:calc(100vw - 90px);font-size:clamp(.98rem,1.2vw,1.1rem);line-height:1.82;color:var(--muted);margin:26px 0 0}
+
+.copy {
+    position: relative;
+    z-index: 3;
+    width: 60%;
+    min-height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(45px,7vw,120px) 0 80px clamp(22px,5vw,88px);
+    pointer-events: none;
+}
+
+.copy>* {
+    pointer-events: auto;
+}
+
+.eyebrow {
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(3.5rem,5.8vw,6.7rem);
+    line-height: .98;
+    letter-spacing: -.055em;
+    margin: 32px 0 28px;
+    max-width: 900px;
+}
+
+h1 em {
+    font-weight: 400;
+    color: var(--blue);
+}
+
+.specialities {
+    font-size: clamp(14px,1.4vw,20px);
+    font-weight: 600;
+    line-height: 1.7;
+    letter-spacing: .005em;
+    color: var(--ink);
+    width: max-content;
+    max-width: calc(100vw - 44px);
+    white-space: nowrap;
+}
+
+.intro {
+    width: 660px;
+    max-width: calc(100vw - 90px);
+    font-size: clamp(.98rem,1.2vw,1.1rem);
+    line-height: 1.82;
+    color: var(--muted);
+    margin: 26px 0 0;
+}
+
 .art {
     position: absolute;
     inset: 0;
@@ -64,62 +399,673 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(3.5rem,5.8vw,6.7rem)
     overflow: hidden;
     isolation: isolate;
 }
-.art::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(247,242,241,1) 0%,rgba(247,242,241,.90) 30%,rgba(247,242,241,.80) 60%,rgba(247,242,241,0) 82%)}
-#poster,#graphene-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#poster{object-fit:contain;object-position:right center;opacity:.75;filter:contrast(.96) saturate(.93);transform: scaleX(1.35); transform-origin: right center;transition:opacity .5s}#graphene-canvas{z-index:0;touch-action:pan-y;cursor:crosshair}.art.is-live #poster{opacity:0}
-.hero-down{align-self:flex-start;display:inline-flex;align-items:center;gap:20px;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;margin-top:35px;padding-bottom:10px;border-bottom:1px solid var(--blue);text-decoration:none;color:var(--blue)}.hero-down span{font-size:24px}.hero-down:hover span{transform:translateY(3px)}
-/* Wide monitors: more stretch and stronger left fade */
-@media (min-width: 1000px) {
 
-  #poster {
-    transform: scaleX(1.55);
-  }
-
-  .art::before {
-    background: linear-gradient(
-      90deg,
-      var(--paper) 0%,
-      var(--paper) 20%,
-      rgba(247,242,241,.98) 35%,
-      rgba(247,242,241,.85) 48%,
-      rgba(247,242,241,.45) 62%,
-      rgba(247,242,241,.10) 75%,
-      transparent 85%
-    );
-  }
+.art::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(90deg,rgba(247,242,241,1) 0%,rgba(247,242,241,.90) 30%,rgba(247,242,241,.80) 60%,rgba(247,242,241,0) 82%);
 }
-/* About */
-.about-layout{display:grid;grid-template-columns:minmax(190px,.7fr) minmax(0,1.3fr);gap:clamp(30px,7vw,125px);align-items:start}
-.portrait{min-height:380px;max-height:550px;aspect-ratio:4/5;background:transparent;display:grid;place-items:end center;position:relative;overflow:visible;}.portrait[hidden]{display:none}.portrait img{max-width:100%;width:100%;height:100%;object-fit:contain;object-position:center bottom}.about-layout.no-portrait{grid-template-columns:minmax(0,1fr)}
-.about-copy h3{font:400 clamp(1.9rem,3vw,3.4rem)/1.05 var(--serif);margin:0 0 20px;letter-spacing:-.03em}.about-copy h3 em{color:var(--blue)}.about-copy p{font-size:clamp(1rem,1.35vw,1.17rem);line-height:1.86;color:var(--muted);max-width:760px}
-/* Publications */
-.paper{display:grid;grid-template-columns:100px minmax(0,1fr) auto;column-gap: 25px; row-gap: 5px;;padding:30px 0;border-bottom:1px solid var(--line);align-items:start}.paper-ref{padding-top: 0.35rem;font:12px var(--mono);color:var(--red);letter-spacing:.07em}.paper h3{font:400 clamp(1.22rem,1.7vw,1.72rem)/1.26 var(--serif);margin:0 0 12px}.paper-meta,.paper-note{font-size:.89rem;color:var(--muted);line-height:1.6}.paper-action{color:var(--blue);font:.78rem var(--mono);white-space:nowrap}.placeholder{color:var(--muted);font-style:italic;opacity:.85}.paper .paper-note { grid-column: 2 / 4; grid-row: 2; width: 100%; max-width: none; margin: 0; }.paper-action span { display: inline-block; transition: transform 0.3s ease; } .paper-action:hover span { transform: translate(3px, -3px); }
-/* Thesis & education */
-.thesis-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(35px,7vw,115px)}.thesis-grid h3,.degree h3{font:400 clamp(1.9rem,3.2vw,3.5rem)/1.08 var(--serif);margin:14px 0 22px}.thesis-grid p,.degree p{font-size:1rem;line-height:1.8;color:var(--muted)}.link-text{color:var(--blue);text-underline-offset:5px}
+
+#poster,#graphene-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#poster {
+    object-fit: contain;
+    object-position: right center;
+    opacity: .75;
+    filter: contrast(.96) saturate(.93);
+    transform: scaleX(1.35);
+    transform-origin: right center;
+    transition: opacity .5s;
+}
+
+#graphene-canvas {
+    z-index: 0;
+    touch-action: pan-y;
+    cursor: crosshair;
+}
+
+.art.is-live #poster {
+    opacity: 0;
+}
+
+.hero-down {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    font-family: var(--mono);
+    font-size: .78rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-top: 35px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--blue);
+    text-decoration: none;
+    color: var(--blue);
+}
+
+.hero-down span {
+    font-size: 24px;
+}
+
+.hero-down:hover span {
+    transform: translateY(3px);
+}
+
+.menu-caret,.site-nav a span,.next-link span,.hero-down span {
+    color: var(--red);
+}
+
+.menu-button:hover,.site-nav a:hover,.next-link:hover,.hero-down:hover {
+    color: var(--blue);
+}
+
+.menu-button:hover .menu-caret,.site-nav a:hover span,.next-link:hover span,.hero-down:hover span {
+    color: var(--red);
+}
+
+.next-link,.hero-down {
+    color: var(--ink);
+    border-bottom-color: var(--line);
+}
+
+
+/* ==========================================================================
+   05. ABOUT ME
+   Two-column layout, portrait, scroll offset and interactive glow.
+   ========================================================================== */
+
+.about-layout {
+    display: grid;
+    grid-template-columns: minmax(190px,.7fr) minmax(0,1.3fr);
+    gap: clamp(30px,7vw,125px);
+    align-items: start;
+}
+
+.portrait {
+    min-height: 380px;
+    max-height: 550px;
+    aspect-ratio: 4/5;
+    background: transparent;
+    display: grid;
+    place-items: end center;
+    position: relative;
+    overflow: visible;
+}
+
+.portrait[hidden] {
+    display: none;
+}
+
+.portrait img {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+.about-layout.no-portrait {
+    grid-template-columns: minmax(0,1fr);
+}
+
+.about-copy h3 {
+    font: 400 clamp(1.9rem,3vw,3.4rem)/1.05 var(--serif);
+    margin: 0 0 20px;
+    letter-spacing: -.03em;
+}
+
+.about-copy h3 em {
+    color: var(--blue);
+}
+
+.about-copy p {
+    font-size: clamp(1rem,1.35vw,1.17rem);
+    line-height: 1.86;
+    color: var(--muted);
+    max-width: 760px;
+}
+
+#about {
+    position: relative;
+    isolation: isolate;
+}
+
+#about-portrait {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+#about-portrait img {
+    position: relative;
+    z-index: 1;
+}
+
+#portrait-image {
+    transform: translate3d(0, var(--portrait-offset, 0px), 0);
+    will-change: transform;
+}
+
+#about .panel-content {
+    padding-top: clamp(35px, 5vw, 75px);
+    position: relative;
+    isolation: isolate;
+}
+
+#about .about-copy {
+    margin-top: 0;
+}
+
+#about .panel-head {
+    display: block;
+    margin-bottom: clamp(25px, 3vw, 40px);
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--line);
+}
+
+#about .panel-head h2 {
+    margin-bottom: 0;
+}
+
+#about .about-layout {
+    margin-top: 0;
+}
+
+#about .about-glow-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#about .about-glow-stamp {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: radial-gradient( circle at 35% 35%, rgba(25, 118, 163, .22), transparent 70% ), radial-gradient( circle at 65% 65%, rgba(180, 43, 67, .18), transparent 75% );
+    filter: blur(6px);
+    pointer-events: none;
+    animation: portraitGlowFade 2.2s ease-out forwards;
+}
+
+@keyframes portraitGlowFade {
+    0% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(.7);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+}
+
+#about .panel-content > :not(.about-glow-layer) {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* ==========================================================================
+   06. PUBLICATIONS
+   Paper list, metadata, arrow links.
+   ========================================================================== */
+
+.paper {
+    display: grid;
+    grid-template-columns: 100px minmax(0,1fr) auto;
+    column-gap: 25px;
+    row-gap: 5px;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+}
+
+.paper-ref {
+    padding-top: 0.35rem;
+    font: 12px var(--mono);
+    color: var(--red);
+    letter-spacing: .07em;
+}
+
+.paper h3 {
+    font: 400 clamp(1.22rem,1.7vw,1.72rem)/1.26 var(--serif);
+    margin: 0 0 12px;
+}
+
+.paper-meta,.paper-note {
+    font-size: .89rem;
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.paper-action {
+    color: var(--blue);
+    font: .78rem var(--mono);
+    white-space: nowrap;
+}
+
+.placeholder {
+    color: var(--muted);
+    font-style: italic;
+    opacity: .85;
+}
+
+.paper .paper-note {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+.paper-action span {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.paper-action:hover span {
+    transform: translate(3px, -3px);
+}
+
+
+/* ==========================================================================
+   07. PHD THESIS
+   Thesis layout, abstract, supervisor, link and slides.
+   ========================================================================== */
+
+.thesis-grid {
+    display: grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap: clamp(35px,7vw,115px);
+}
+
+.thesis-grid h3,.degree h3 {
+    font: 400 clamp(1.9rem,3.2vw,3.5rem)/1.08 var(--serif);
+    margin: 14px 0 22px;
+}
+
+.thesis-grid p,.degree p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+.link-text {
+    color: var(--blue);
+    text-underline-offset: 5px;
+}
+
 .abstract {
     width: 100%;
     max-width: none;
-
     border: none;
     background: transparent;
     padding: 0;
     box-shadow: none;
-
     margin: 45px 0 60px;
 }
-.abstract h3{font:500 2rem var(--serif);margin:0 0 18px}.abstract p{line-height:1.8;color:var(--muted)}
-/* ==========================================
-   THESIS: VERTICAL LAYOUT
-========================================== */
-#thesis .thesis-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; margin-bottom: 48px; }
-/* Prevent content from overflowing the column */
-#thesis .thesis-grid > * { min-width: 0; }
-/* Keep the abstract at a comfortable reading width */
-#thesis .thesis-grid > :nth-child(2) { width: 100%;}
-.degree{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,7vw,110px)}.affiliations{display:grid;align-content:start;gap:14px}.affiliation{border:1px solid var(--line);padding:18px;display:flex;gap:20px;align-items:center;text-decoration:none;transition:border-color .25s,transform .25s}.affiliation:hover{border-color:var(--blue);transform:translateY(-2px); background-color: rgba(25, 118, 163, 0.04);}.affiliation img{width:100px;height:75px;object-fit:contain}.logo-fallback{width:100px;height:75px;display:grid;place-items:center;background:#fff;color:var(--blue);font:11px var(--mono);text-align:center;border:1px solid var(--line)}.affiliation strong{display:block;font-weight:600;font-size:1rem}.affiliation small{display:block;margin-top:7px;color:var(--muted);line-height:1.5}
-/* Experience */
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:25px}
-/* Default button */
+
+.abstract h3 {
+    font: 500 2rem var(--serif);
+    margin: 0 0 18px;
+}
+
+.abstract p {
+    line-height: 1.8;
+    color: var(--muted);
+}
+
+#thesis .thesis-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+    margin-bottom: 48px;
+}
+
+#thesis .thesis-grid > * {
+    min-width: 0;
+}
+
+#thesis .thesis-grid > :nth-child(2) {
+    width: 100%;
+}
+
+.thesis-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: color .25s ease, transform .25s ease;
+}
+
+.thesis-action:hover {
+    color: var(--blue);
+    transform: translateY(-2px);
+}
+
+.thesis-action span {
+    display: inline-block;
+    transition: transform .25s ease;
+}
+
+.thesis-action:hover span {
+    transform: translate(3px, -3px);
+}
+
+#thesis-gallery {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+#thesis-gallery .gallery-figure {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    background: transparent;
+    box-shadow: none;
+}
+
+#thesis-gallery .thesis-image-stage {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1719 / 709;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+#thesis-gallery .thesis-image-stage > img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    aspect-ratio: auto;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#thesis-gallery .thesis-slide-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 200%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+}
+
+#thesis-gallery .thesis-slide-track img {
+    position: static;
+    display: block;
+    flex: 0 0 50%;
+    width: 50%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    aspect-ratio: auto;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#thesis-gallery .gallery-figure figcaption {
+    position: static;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+}
+
+#thesis-gallery .thesis-image-stage > img, #thesis-gallery .thesis-slide-track img {
+    transform: scale(0.9);
+    transform-origin: center;
+}
+
+#thesis .thesis-supervisor {
+    font-family: var(--sans);
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--ink);
+    margin: 14px 0 24px;
+}
+
+
+/* ==========================================================================
+   08. EDUCATION & AFFILIATIONS
+   Degrees, achievements, institution logo cards and fallbacks.
+   ========================================================================== */
+
+.degree {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px,7vw,110px);
+}
+
+.affiliations {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+}
+
+.affiliation {
+    border: 1px solid var(--line);
+    padding: 18px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    text-decoration: none;
+    transition: border-color .25s,transform .25s;
+}
+
+.affiliation:hover {
+    border-color: var(--blue);
+    transform: translateY(-2px);
+    background-color: rgba(25, 118, 163, 0.04);
+}
+
+.affiliation img {
+    width: 100px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.logo-fallback {
+    width: 100px;
+    height: 75px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+    color: var(--blue);
+    font: 11px var(--mono);
+    text-align: center;
+    border: 1px solid var(--line);
+}
+
+.affiliation strong {
+    display: block;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.affiliation small {
+    display: block;
+    margin-top: 7px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+#education .education-stack {
+    display: block;
+    width: 100%;
+    max-width: none;
+}
+
+#education .education-entry {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin-bottom: 40px;
+}
+
+#education .education-info {
+    width: 100%;
+    max-width: none;
+}
+
+#education .education-info p {
+    max-width: 1050px;
+}
+
+.education-entry {
+    display: grid;
+    grid-template-columns: minmax(0,1.15fr) minmax(0,.85fr);
+    gap: clamp(24px,6vw,95px);
+    padding: clamp(34px,5vw,66px) 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.education-entry:first-child {
+    padding-top: 0;
+}
+
+.education-entry:last-child {
+    border-bottom: 0;
+}
+
+.education-info h3 {
+    font: 400 clamp(1.7rem,2.6vw,2.7rem)/1.1 var(--serif);
+    margin: 16px 0;
+}
+
+.education-info p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 740px;
+}
+
+.education-info .education-place {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.education-info strong {
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.education-marks {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 14px;
+    align-content: center;
+}
+
+.education-marks>div {
+    padding: 20px 8px;
+    border-top: 2px solid var(--red);
+}
+
+.education-marks strong {
+    display: block;
+    font: 400 clamp(1.7rem,2.8vw,2.8rem) var(--serif);
+    color: var(--blue);
+}
+
+.education-marks strong span {
+    font: .8rem var(--mono);
+    color: var(--muted);
+}
+
+.education-marks small {
+    display: block;
+    font: .7rem/1.5 var(--sans);
+    color: var(--muted);
+}
+
+.affiliation .logo-fallback[hidden], .affiliation img[data-logo-img][hidden] {
+    display: none !important;
+}
+
+#education .affiliations {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 24px;
+    width: 100%;
+    max-width: 920px;
+    margin: 60px auto 0;
+}
+
+#education .affiliation {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1 1 340px;
+    max-width: 448px;
+    min-width: 0;
+    padding: 20px 24px;
+}
+
+#education .affiliation img {
+    width: 154px;
+    height: 91px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+#education .affiliation [hidden] {
+    display: none !important;
+}
+
+
+/* ==========================================================================
+   09. ACADEMIC HIGHLIGHTS
+   Filter buttons and awards/conferences/teaching timeline.
+   ========================================================================== */
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
 .filter {
     border: 1px solid var(--line);
     background: transparent;
@@ -128,51 +1074,263 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(3.5rem,5.8vw,6.7rem)
     cursor: pointer;
     font-size: .88rem;
     min-height: 44px;
-
-    transition:
-        transform .25s ease,
-        color .25s ease,
-        background .25s ease,
-        border-color .25s ease;
+    transition: transform .25s ease, color .25s ease, *background* .25s ease, border-color .25s ease;
 }
-/* Move filter buttons upwards on hover */
 
 .filter:hover {
     transform: translateY(-2px);
+    background: rgba(25, 118, 163, 0.04);
     color: var(--blue);
     border-color: var(--blue);
-    background: rgba(25, 118, 163, 0.04);
 }
-
-/* Subtle pressed effect */
 
 .filter:active {
     transform: translateY(-1px);
 }
-/* Unselected hover */
-.filter:hover {
-    color: var(--blue);
-    border-color: var(--blue);
-}
 
-/* Selected */
 .filter[aria-pressed="true"] {
     background: #397FA0;
     color: white;
     border-color: #397FA0;
 }
 
-/* Selected hover */
 .filter[aria-pressed="true"]:hover {
     transform: translateY(-2px);
     background: #1976A3;
     color: white;
     border-color: #1976A3;
 }
-.timeline-count{font:11px var(--mono);color:var(--red);letter-spacing:.12em;margin-bottom:8px}.timeline{list-style:none;margin:0;padding:0}.timeline-item{display:grid;grid-template-columns:125px 1fr auto;gap:25px;border-bottom:1px solid var(--line);padding:23px 0;align-items:start}.timeline-item[hidden]{display:none}.timeline-year{font:13px var(--mono);color:var(--red)}.timeline-item h3{font:400 clamp(1.3rem,1.8vw,1.85rem)/1.2 var(--serif);margin:0 0 4px}.timeline-item h3 a{text-decoration:none}.timeline-item h3 a:hover{color:var(--blue)}.timeline-item p{color:var(--muted);line-height:1.6;margin:0;font-size:.88rem}.timeline-tag{font:12px var(--mono);color:var(--blue);text-transform:uppercase} */
 
-/* Older projects */
-.archive-label{margin:45px 0 8px;color:var(--blue)}.project-group{border-top:1px solid var(--line)}
+.timeline-count {
+    font: 11px var(--mono);
+    color: var(--red);
+    letter-spacing: .12em;
+    margin-bottom: 8px;
+}
+
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 125px 1fr auto;
+    gap: 25px;
+    border-bottom: 1px solid var(--line);
+    padding: 23px 0;
+    align-items: start;
+}
+
+.timeline-item[hidden] {
+    display: none;
+}
+
+.timeline-year {
+    font: 13px var(--mono);
+    color: var(--red);
+}
+
+.timeline-item h3 {
+    font: 400 clamp(1.3rem,1.8vw,1.85rem)/1.2 var(--serif);
+    margin: 0 0 4px;
+}
+
+.timeline-item h3 a {
+    text-decoration: none;
+}
+
+.timeline-item h3 a:hover {
+    color: var(--blue);
+}
+
+.timeline-item p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+    font-size: .88rem;
+}
+
+.timeline-tag {
+    font: 12px var(--mono);
+    color: var(--blue);
+    text-transform: uppercase;
+}
+
+
+/* ==========================================================================
+   10. CONSULTING & COMMERCIALISATION
+   Consulting entries, title/logo grid and full-width descriptions.
+   ========================================================================== */
+
+#projects .archive-intro {
+    width: 100%;
+    max-width: none;
+    margin: 0 0 22px;
+    color: var(--muted);
+    font-size: .98rem;
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+#projects .consulting-projects {
+    margin: 0 0 55px;
+    border-top: 1px solid var(--line);
+}
+
+#projects .consulting-entry {
+    display: block;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+#projects .consulting-number {
+    margin-bottom: 18px;
+    font: 12px var(--mono);
+    color: var(--red);
+    letter-spacing: .12em;
+}
+
+#projects .consulting-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 40%);
+    align-items: center;
+    gap: 35px;
+    margin-bottom: 28px;
+}
+
+#projects .consulting-heading h4 {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 1.9vw, 1.8rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0 0 12px;
+}
+
+#projects .consulting-institution {
+    font-family: var(--sans);
+    font-size: .9rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+#projects .consulting-logo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: end;
+    align-self: center;
+    max-width: 300px;
+    margin-left: auto;
+    gap: 6px;
+    width: 80%;
+    aspect-ratio: 2.8 / 1;
+    min-height: 0;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .25s ease, border-color .25s ease, *background* .25s ease;
+}
+
+#projects .consulting-logo img {
+    display: block;
+    width: 100%;
+    height: 55px;
+    object-fit: contain;
+}
+
+#projects .consulting-logo-label {
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-family: var(--sans);
+    font-size: .7rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--muted);
+}
+
+#projects .consulting-logo-label span {
+    display: inline-block;
+    color: var(--blue);
+    margin-left: 5px;
+    transition: transform .25s ease;
+}
+
+#projects .consulting-logo:hover, #projects .consulting-logo:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--blue);
+    background-color: rgba(25, 118, 163, 0.04);
+}
+
+#projects .consulting-text {
+    display: block;
+    width: 100%;
+    max-width: none;
+}
+
+#projects .consulting-text p {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    color: var(--muted);
+    font-size: .98rem;
+    font-weight: 400;
+    line-height: 1.8;
+}
+
+
+/* ==========================================================================
+   11. EARLIER ACADEMIC PROJECTS
+   Expandable reports, project numbers and headings.
+   ========================================================================== */
+
+#projects .project-section-heading {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 2.8vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+    width: 100%;
+    max-width: none;
+    margin: 0 0 22px;
+}
+
+#projects .archive-subhead {
+    font-family: var(--mono);
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    line-height: 1.6;
+    color: var(--red);
+    width: 100%;
+    max-width: none;
+    margin: 45px 0 20px;
+}
+
+#projects .project-title {
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.35;
+}
+
+/* Original source contained a malformed selector before .archive-label.
+   Its declarations were not applied; left inactive to preserve appearance.
+   .archive-label { margin: 45px 0 8px; color: var(--blue); }
+*/
+
+.project-group {
+    border-top: 1px solid var(--line);
+}
+
 .project-entry {
     border-bottom: 1px solid var(--line);
 }
@@ -196,524 +1354,370 @@ h1{font-family:var(--serif);font-weight:500;font-size:clamp(3.5rem,5.8vw,6.7rem)
     color: var(--red);
 }
 
-/* Smooth colour transitions */
-.project-title,
-.project-plus {
+.project-title, .project-plus {
     transition: color .25s ease;
 }
 
-/* Blue title and + symbol on hover */
-.project-entry summary:hover .project-title,
-.project-entry summary:hover .project-plus,
-.project-entry summary:focus-visible .project-title,
-.project-entry summary:focus-visible .project-plus {
+.project-entry summary:hover .project-title, .project-entry summary:hover .project-plus, .project-entry summary:focus-visible .project-title, .project-entry summary:focus-visible .project-plus {
     color: var(--blue);
 }
-.project-title{font:400 clamp(1.3rem,2vw,2rem) var(--serif)}.project-plus{font-size:24px;color:var(--blue)}.project-entry[open] .project-plus{transform:rotate(45deg)}.project-body{padding:0 0 24px 70px;color:var(--muted);font-size:.95rem;line-height:1.7}.project-body a{color:var(--blue);text-underline-offset:5px}
-.site-footer{padding:30px clamp(22px,5vw,88px);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);background:linear-gradient(150deg,rgba(22,152,194,.14),rgba(180,43,67,.10)),var(--paper);font:11px var(--mono);color:var(--muted)}.site-footer a{color:var(--blue)}
-.site-footer { scroll-snap-align: end; }
-dialog{border:1px solid var(--line);background:var(--paper-2);color:var(--ink);width:min(90vw,500px);padding:30px;box-shadow:0 30px 90px rgba(19,39,60,.18)}dialog::backdrop{background:rgba(19,39,60,.47)}.dialog-title{font:400 2.8rem var(--serif);margin:0 0 12px}.dialog-close{float:right;border:0;background:none;cursor:pointer;font-size:25px}.contact-form{display:grid;gap:12px}.contact-form label{font-size:.84rem}.contact-form input,.contact-form textarea{width:100%;border:1px solid var(--line);background:white;padding:12px;min-height:44px}.contact-form textarea{min-height:130px;resize:vertical}.submit-message{background:var(--ink);border:none;color:white;padding:14px 20px;min-height:44px;cursor:pointer}.form-status{font-size:.8rem;color:var(--red)}
-/* Mobile and small-screen refinements */
-@media(max-width:1200px){.specialities{white-space:normal;width:auto;max-width:850px}.copy{width:75%}}
-@media(max-width:900px){.copy{width:100%;padding:70px clamp(22px,6vw,58px) 0;min-height:auto}.hero{display:block;min-height:0; grid-template-columns: minmax(0, 1fr); padding-right: 0;}.art{position:relative;height:55vw;min-height:340px;max-height:540px; width: 100%; max-width: none; margin: 0; justify-self: stretch;}.art::before{background:linear-gradient(180deg,var(--paper) 0%,rgba(247,242,241,0) 25%)}.copy h1{font-size:clamp(3.45rem,8vw,5.4rem)}.intro{width:min(680px,100%)}.specialities{max-width:100%}.panel-head{display:block}.section-desc{margin-top:22px}.about-layout,.degree,.thesis-grid{grid-template-columns:1fr}.portrait{max-width:380px;min-height:340px}.paper{grid-template-columns:60px 1fr}.paper-action{grid-column:2}.timeline-item{grid-template-columns:85px 1fr}.timeline-tag{grid-column:2}} @media(max-width:580px){.masthead{min-height:68px;padding:0 12px;gap:6px}.wordmark{font-size:.74rem;min-width:0;max-width:115px;overflow:hidden;text-overflow:ellipsis}.mast-right{gap:6px}.social-links{gap:5px}.social-links a{width:38px;height:38px;flex-basis:38px;padding:0;font-size:11px}.social-links svg{width:17px;height:17px}.menu-button{font-size:.66rem;padding:8px 7px}.copy{padding-top:65px}.copy h1{font-size:clamp(3.05rem,12vw,4.3rem);margin:26px 0 22px}.intro{line-height:1.75;font-size:1rem}.specialities{font-size:.92rem;line-height:1.75}.art{height:370px}.panel{padding:76px 0 28px}.shell{width:calc(100% - 44px)}
-.panel h2{font-size:clamp(2.6rem,10.5vw,3.1rem)}.paper{grid-template-columns:1fr;gap:11px}.paper-action{grid-column:1}.timeline-item{grid-template-columns:1fr;gap:8px}.timeline-tag{grid-column:1}.project-entry summary{grid-template-columns:28px 1fr 18px;gap:12px}.project-body{padding-left:40px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;scroll-snap-type:none}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-@media(max-width: 700px){.paper{grid-template-columns: minmax(0, 1fr); row-gap: 12px;}.paper-ref, .paper-heading, .paper-action, .paper .paper-note{grid-column: 1; grid-row: auto;}.paper-ref{padding-top: 0;}.paper-action{justify-self: start;}}
-/* Refinements: red arrows, text-only blue hover, reduced publication title size. */
-.menu-caret,.site-nav a span,.next-link span,.hero-down span{color:var(--red)}
-.menu-button:hover,.site-nav a:hover,.next-link:hover,.hero-down:hover{color:var(--blue)}
-.menu-button:hover .menu-caret,.site-nav a:hover span,.next-link:hover span,.hero-down:hover span{color:var(--red)}
-.next-link,.hero-down{color:var(--ink);border-bottom-color:var(--line)}
-.site-nav a:hover{text-decoration:none}
-@media (prefers-reduced-motion: reduce) {
-    .filter,
-    .thesis-action,
-    .thesis-action span,
-    .consulting-logo,
-    .consulting-logo-label span,
-    .affiliation {
-        transition: none;
-    }
 
-    .filter:hover,
-    .thesis-action:hover,
-    #projects .consulting-logo:hover,
-    .affiliation:hover {
-        transform: none;
-    }
-}
-/* Education: three clear stages instead of repeating the thesis. */
-/* ==========================================
-   EDUCATION: FULL-WIDTH LAYOUT
-========================================== */
-#education .education-stack { display: block; width: 100%; max-width: none; }
-#education .education-entry { display: block; width: 100%; max-width: none; margin-bottom: 40px; }
-#education .education-info { width: 100%; max-width: none; }
-/* Keep paragraphs readable on wide monitors */
-#education .education-info p { max-width: 1050px; }
-.education-entry{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(24px,6vw,95px);padding:clamp(34px,5vw,66px) 0;border-bottom:1px solid var(--line)}
-.education-entry:first-child{padding-top:0}
-.education-entry:last-child{border-bottom:0}
-.education-info h3{font:400 clamp(1.7rem,2.6vw,2.7rem)/1.1 var(--serif);margin:16px 0}
-.education-info p{font-size:1rem;line-height:1.8;color:var(--muted);max-width:740px}
-.education-info .education-place{color:var(--ink);font-weight:600}
-.education-info strong{font-weight:700;color:var(--ink)}
-.education-marks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-content:center}
-.education-marks>div{padding:20px 8px;border-top:2px solid var(--red)}
-.education-marks strong{display:block;font:400 clamp(1.7rem,2.8vw,2.8rem) var(--serif);color:var(--blue)}
-.education-marks strong span{font:.8rem var(--mono);color:var(--muted)}
-.education-marks small{display:block;font:.7rem/1.5 var(--sans);color:var(--muted)}
-/* Optional photographic/figure slideshows: not displayed until files exist. */
-.media-gallery[hidden]{display:none!important}
-.media-gallery{max-width:1040px;margin:clamp(45px,6vw,90px) auto 0;border-top:1px solid var(--line);padding-top:26px}
-.gallery-heading{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:20px}
-.gallery-heading h3{font:400 clamp(1.7rem,2.5vw,2.65rem)/1.05 var(--serif);margin:12px 0 0}
-.gallery-heading h3 em{color:var(--blue);font-weight:400}
-.gallery-controls{display:flex;gap:8px;flex-shrink:0}
-.gallery-controls button{width:44px;height:44px;border:1px solid var(--line);color:var(--red);background:transparent;cursor:pointer;font-size:1.35rem;transition:color .2s,border-color .2s}
-.gallery-controls button:hover:not(:disabled){color:var(--blue);border-color:var(--blue)}
-.gallery-controls button:disabled{opacity:.3;cursor:default}
-.gallery-figure{margin:0;position:relative;background:rgba(255,255,255,.42);border:1px solid var(--line)}
-.gallery-figure img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
-.figure-gallery .gallery-figure img{object-fit:contain;background:var(--paper-2)}
-.gallery-figure figcaption{padding:14px 18px;color:var(--muted);font-size:.9rem;line-height:1.5}
-.gallery-progress{font:11px var(--mono);letter-spacing:.09em;color:var(--red);margin:12px 0 0}
-.gallery-extra{color:var(--muted);font-size:.9rem;line-height:1.6}
-@media(max-width:900px){.education-entry{grid-template-columns:1fr}}
-@media(max-width:580px){.education-marks{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.education-marks>div{padding:12px 3px}.education-marks small{font-size:.64rem}.gallery-heading{align-items:start}}
-@media(prefers-reduced-motion:reduce){.gallery-controls button{transition:none}}
-@media (prefers-reduced-motion:reduce) { #projects .consulting-logo, .filter { transition: none; } #projects .consulting-logo:hover, .filter:hover, .filter:active { transform: none; } }
-/* ==========================================
-   PORTRAIT: BOTTOM FADE
-========================================== */
-/* Glow confined to the portrait */
-
-#about-portrait {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
+.project-title {
+    font: 400 clamp(1.3rem,2vw,2rem) var(--serif);
 }
 
-#about-portrait img {
-    position: relative;
-    z-index: 1;
-}
-
-#about {
-    position: relative;
-    isolation: isolate;
-}
-
-#about .about-glow-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-
-    overflow: visible;
-    pointer-events: none;
-}
-
-/* Small light following the cursor */
-#about .about-glow-stamp {
-    position: absolute;
-
-    width: 34px;
-    height: 34px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle at 35% 35%,
-            rgba(25, 118, 163, .22),
-            transparent 70%
-        ),
-        radial-gradient(
-            circle at 65% 65%,
-            rgba(180, 43, 67, .18),
-            transparent 75%
-        );
-
-    filter: blur(6px);
-    pointer-events: none;
-
-    animation: portraitGlowFade 2.2s ease-out forwards;
-}
-
-@keyframes portraitGlowFade {
-    0% {
-        opacity: 0.6;
-        transform: translate(-50%, -50%) scale(.7);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(1.5);
-    }
-}
-
-#about .panel-content { padding-top: clamp(35px, 5vw, 75px); }
-#about .about-copy { margin-top: 0; }
-/* About section heading */
-#about .panel-head { display: block; margin-bottom: clamp(25px, 3vw, 40px); padding-bottom: 25px; border-bottom: 1px solid var(--line);}
-/* Keep the characteristic h2 styling */
-#about .panel-head h2 { margin-bottom: 0; }
-/* Bring portrait and biography closer to the heading */
-#about .about-layout { margin-top: 0; }
-/* ========================================
-   ABOUT ME - INTERACTIVE GRADIENT LIGHT
-   ======================================== */
-
-#about .panel-content {
-    position: relative;
-    isolation: isolate;
-}
-
-/* The invisible layer holding the light */
-
-#about .about-glow-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-/* Keep the actual content above the light */
-
-#about .panel-content > :not(.about-glow-layer) {
-    position: relative;
-    z-index: 1;
-}
-
-/* Main light following the cursor */
-
-/* ==========================================
-   PORTRAIT: SCROLL MOVEMENT
-========================================== */
-/* ==========================================
-   PORTRAIT
-========================================== */
-#portrait-image { transform: translate3d(0, var(--portrait-offset, 0px), 0); will-change: transform; }
-/* ==========================================
-   THESIS TITLE
-========================================== */
-/* .thesis-grid > div:first-child > h3 { font: 400 clamp(1.5rem, 2.2vw, 2rem)/1.2 var(--serif); margin: 14px 0 22px; } */
-/* ==========================================
-   THESIS LINK
-========================================== */
-/* Text link hover */
-
-.thesis-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-
-    transition:
-        color .25s ease,
-        transform .25s ease;
-}
-
-.thesis-action:hover {
+.project-plus {
+    font-size: 24px;
     color: var(--blue);
-    transform: translateY(-2px);
 }
 
-/* Arrow animation */
-
-.thesis-action span {
-    display: inline-block;
-    transition: transform .25s ease;
+.project-entry[open] .project-plus {
+    transform: rotate(45deg);
 }
 
-.thesis-action:hover span {
-    transform: translate(3px, -3px);
+.project-body {
+    padding: 0 0 24px 70px;
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.7;
 }
-/* ==========================================
-   THESIS SLIDESHOW
-========================================== */
-#thesis-gallery { background: transparent; border: none; box-shadow: none; }
-/* Outer frame: fits the image area and caption */
-#thesis-gallery .gallery-figure { display: block; width: 100%; height: auto; min-height: 0; aspect-ratio: auto; margin: 0; padding: 0; border: 1px solid var(--line); background: transparent; box-shadow: none; }
-/* Image area: exact proportions of largest figure */
-#thesis-gallery .thesis-image-stage { position: relative; display: block; width: 100%; height: auto; min-height: 0; aspect-ratio: 1719 / 709; overflow: hidden; margin: 0; padding: 0; border: none; background: transparent; }
-/* Current figure */
-#thesis-gallery .thesis-image-stage > img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: auto; margin: 0; padding: 0; background: transparent; }
-/* Sliding track */
-#thesis-gallery .thesis-slide-track { position: absolute; top: 0; left: 0; display: flex; align-items: center; width: 200%; height: 100%; background: transparent; pointer-events: none; }
-/* Figures inside the sliding track */
-#thesis-gallery .thesis-slide-track img { position: static; display: block; flex: 0 0 50%; width: 50%; height: 100%; object-fit: contain; object-position: center; aspect-ratio: auto; margin: 0; padding: 0; background: transparent; }
-/* Caption directly beneath image area */
-#thesis-gallery .gallery-figure figcaption { position: static; height: auto; min-height: 0; margin: 0; padding: 10px 12px; background: transparent; border: none; }
-#thesis-gallery .thesis-image-stage > img,
-#thesis-gallery .thesis-slide-track img { transform: scale(0.9); transform-origin: center; }
-#thesis .thesis-supervisor {
-    font-family: var(--sans);
-    font-size: .9rem;
-    font-weight: 700;
-    line-height: 1.5;
-    color: var(--ink);
 
-    margin: 14px 0 24px;
+.project-body a {
+    color: var(--blue);
+    text-underline-offset: 5px;
 }
-/* ==========================================
-   ACCESSIBILITY
-========================================== */
-@media (prefers-reduced-motion: reduce) { #portrait-image { transform: none; will-change: auto; } .thesis-action, .thesis-action span { transition: none; } }
-/* Hide fallback text when the actual logo is available */
-.affiliation .logo-fallback[hidden],
-.affiliation img[data-logo-img][hidden] { display: none !important; }
-/* ==========================================
-   EDUCATION: INSTITUTION LOGOS
-========================================== */
-#education .affiliations { display: flex; flex-direction: row; justify-content: center; align-items: stretch; flex-wrap: wrap; gap: 24px; width: 100%; max-width: 920px; margin: 60px auto 0; }
-/* Individual institution cards */
-#education .affiliation { display: flex; align-items: center; gap: 20px; flex: 1 1 340px; max-width: 448px; min-width: 0; padding: 20px 24px; }
-/* Logos */
-#education .affiliation img { width: 154px; height: 91px; object-fit: contain; flex-shrink: 0; }
-/* Ensure hidden logo fallbacks stay hidden */
-#education .affiliation [hidden] { display: none !important; }
-/* Mobile layout */
-@media (max-width: 768px) { #education .affiliations { margin-top: 36px; gap: 14px; } #education .affiliation { flex-basis: 100%; max-width: 100%; } }
-/* ==========================================
-   PROJECTS: INTRODUCTION
-========================================== */
-#projects .archive-intro { width: 100%; max-width: none; margin: 0 0 22px; color: var(--muted); font-size: 1rem; line-height: 1.8; }
-/* ==========================================
-   CONSULTING: EDITORIAL LAYOUT
-========================================== */
-/* ==========================================
-   CONSULTING PROJECTS
-========================================== */
 
-#projects .consulting-projects {
-    margin: 0 0 55px;
+
+/* ==========================================================================
+   12. SHARED IMAGE GALLERIES
+   Figure galleries, captions and controls.
+   ========================================================================== */
+
+.media-gallery[hidden] {
+    display: none !important;
+}
+
+.media-gallery {
+    max-width: 1040px;
+    margin: clamp(45px,6vw,90px) auto 0;
     border-top: 1px solid var(--line);
+    padding-top: 26px;
 }
 
-/* Individual consulting entries */
-
-#projects .consulting-entry {
-    display: block;
-    padding: 48px 0;
-    border-bottom: 1px solid var(--line);
+.gallery-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 22px;
+    margin-bottom: 20px;
 }
 
-/* Project number */
-
-#projects .consulting-number {
-    margin-bottom: 18px;
-    font: 12px var(--mono);
-    color: var(--red);
-    letter-spacing: .12em;
+.gallery-heading h3 {
+    font: 400 clamp(1.7rem,2.5vw,2.65rem)/1.05 var(--serif);
+    margin: 12px 0 0;
 }
 
-/* ==========================================
-   CONSULTING: TITLE AND LOGO
-========================================== */
-
-/* Two-column layout: title left, logo right */
-
-#projects .consulting-heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
-    align-items: center;
-    gap: 35px;
-
-    margin-bottom: 28px;
-}
-
-/* Project title */
-
-#projects .consulting-heading h4 {
-    font-family: var(--serif);
-    font-size: clamp(1.5rem, 1.9vw, 1.8rem);
+.gallery-heading h3 em {
+    color: var(--blue);
     font-weight: 400;
-    line-height: 1.25;
-    color: var(--ink);
+}
 
+.gallery-controls {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.gallery-controls button {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    color: var(--red);
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.35rem;
+    transition: color .2s,border-color .2s;
+}
+
+.gallery-controls button:hover:not(:disabled) {
+    color: var(--blue);
+    border-color: var(--blue);
+}
+
+.gallery-controls button:disabled {
+    opacity: .3;
+    cursor: default;
+}
+
+.gallery-figure {
+    margin: 0;
+    position: relative;
+    background: rgba(255,255,255,.42);
+    border: 1px solid var(--line);
+}
+
+.gallery-figure img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    display: block;
+}
+
+.figure-gallery .gallery-figure img {
+    object-fit: contain;
+    background: var(--paper-2);
+}
+
+.gallery-figure figcaption {
+    padding: 14px 18px;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.5;
+}
+
+.gallery-progress {
+    font: 11px var(--mono);
+    letter-spacing: .09em;
+    color: var(--red);
+    margin: 12px 0 0;
+}
+
+.gallery-extra {
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.6;
+}
+
+
+/* ==========================================================================
+   13. FOOTER & CONTACT DIALOG
+   Footer snap alignment and form styling.
+   ========================================================================== */
+
+.site-footer {
+    padding: 30px clamp(22px,5vw,88px);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(150deg,rgba(22,152,194,.14),rgba(180,43,67,.10)),var(--paper);
+    font: 11px var(--mono);
+    color: var(--muted);
+    scroll-snap-align: end;
+}
+
+.site-footer a {
+    color: var(--blue);
+}
+
+dialog {
+    border: 1px solid var(--line);
+    background: var(--paper-2);
+    color: var(--ink);
+    width: min(90vw,500px);
+    padding: 30px;
+    box-shadow: 0 30px 90px rgba(19,39,60,.18);
+}
+
+dialog::backdrop {
+    background: rgba(19,39,60,.47);
+}
+
+.dialog-title {
+    font: 400 2.8rem var(--serif);
     margin: 0 0 12px;
 }
 
-/* Institution and location */
-
-#projects .consulting-institution {
-    font-family: var(--sans);
-    font-size: .9rem;
-    font-weight: 700;
-    line-height: 1.5;
-    color: var(--ink);
-}
-
-/* ==========================================
-   CONSULTING: LOGOS
-========================================== */
-
-#projects .consulting-logo {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    justify-self: end;
-    align-self: center;
-    max-width: 300px;
-    margin-left: auto;
-
-    gap: 6px;
-
-    width: 80%;
-    aspect-ratio: 2.8 / 1;
-    min-height: 0;
-    padding: 10px 16px;
-
-    border: 1px solid var(--line);
-    background: transparent;
-    text-decoration: none;
+.dialog-close {
+    float: right;
+    border: 0;
+    background: none;
     cursor: pointer;
-
-    transition:
-        transform .25s ease,
-        border-color .25s ease,
-        background .25s ease;
+    font-size: 25px;
 }
 
-/* Logo images */
-
-#projects .consulting-logo img {
-    display: block;
-    width: 100%;
-    height: 55px;
-    object-fit: contain;
-}
-
-#projects .consulting-logo-label {
-    display: block;
-    width: 100%;
-    text-align: center;
-
-    font-family: var(--sans);
-    font-size: .7rem;
-    font-weight: 400;
-    line-height: 1.3;
-    color: var(--muted);
-}
-
-@media (max-width: 768px) { #projects .consulting-heading { grid-template-columns: 1fr; gap: 20px; } #projects .consulting-logo { justify-self: start; margin-left: 0; max-width: 300px; } }
-
-#projects .consulting-logo-label span {
-    display: inline-block;
-    color: var(--blue);
-    margin-left: 5px;
-    transition: transform .25s ease;
-}
-
-#projects .consulting-logo:hover,
-#projects .consulting-logo:focus-visible {
-    transform: translateY(-2px);
-    border-color: var(--blue);
-    background-color: rgba(25, 118, 163, 0.04);
-}
-
-#projects .consulting-heading {
+.contact-form {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 40%);
-    align-items: center;
-    gap: 35px;
-
-    margin-bottom: 28px;
+    gap: 12px;
 }
 
-/* ==========================================
-   CONSULTING: FULL-WIDTH DESCRIPTION
-========================================== */
+.contact-form label {
+    font-size: .84rem;
+}
 
-#projects .consulting-text {
-    display: block;
+.contact-form input,.contact-form textarea {
     width: 100%;
-    max-width: none;
+    border: 1px solid var(--line);
+    background: white;
+    padding: 12px;
+    min-height: 44px;
 }
 
-#projects .consulting-text p {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-
-    color: var(--muted);
-    font-size: .98rem;
-    font-weight: 400;
-    line-height: 1.8;
+.contact-form textarea {
+    min-height: 130px;
+    resize: vertical;
 }
 
-/* ==========================================
-   EARLIER ACADEMIC PROJECTS
-========================================== */
-
-/* Main section headings */
-
-#projects .project-section-heading {
-    font-family: var(--serif);
-    font-size: clamp(2rem, 2.8vw, 2.5rem);
-    font-weight: 500;
-    line-height: 1.2;
-    color: var(--ink);
-
-    width: 100%;
-    max-width: none;
-    margin: 0 0 22px;
+.submit-message {
+    background: var(--ink);
+    border: none;
+    color: white;
+    padding: 14px 20px;
+    min-height: 44px;
+    cursor: pointer;
 }
 
-/* Section introductory paragraphs */
-
-#projects .archive-intro {
-    color: var(--muted);
-    font-size: .98rem;
-    font-weight: 400;
-    line-height: 1.8;
-}
-
-/* CDT and undergraduate category headings */
-
-#projects .archive-subhead {
-    font-family: var(--mono);
-    font-size: .78rem;
-    font-weight: 500;
-    letter-spacing: .09em;
-    text-transform: uppercase;
-    line-height: 1.6;
+.form-status {
+    font-size: .8rem;
     color: var(--red);
-    width: 100%;
-    max-width: none;
-    margin: 45px 0 20px;
 }
 
-/* Individual academic project titles */
 
-#projects .project-title {
-    font-family: var(--serif);
-    font-size: clamp(1.15rem, 1.6vw, 1.35rem);
-    font-weight: 400;
-    line-height: 1.35;
-}
+/* ==========================================================================
+   14. RESPONSIVE LAYOUTS
+   Ordered to retain the original cascade. Note that the <=700px
+   publication rules intentionally follow the <=580px styles.
+   ========================================================================== */
 
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media (max-width: 768px) {
-
-    #projects .consulting-entry {
-        padding: 36px 0;
+/* Narrower desktop layout */
+@media (max-width:1200px) {
+    .specialities {
+        white-space: normal;
+        width: auto;
+        max-width: 850px;
     }
 
-    /* Stack title and logo vertically */
+    .copy {
+        width: 75%;
+    }
+}
+
+
+/* Large monitors: stronger poster stretch and fade */
+@media (min-width:1000px) {
+    #poster {
+        transform: scaleX(1.55);
+    }
+
+    .art::before {
+        background: linear-gradient( 90deg, var(--paper) 0%, var(--paper) 20%, rgba(247,242,241,.98) 35%, rgba(247,242,241,.85) 48%, rgba(247,242,241,.45) 62%, rgba(247,242,241,.10) 75%, transparent 85% );
+    }
+}
+
+
+/* Tablet and small-screen layout */
+@media (max-width:900px) {
+    .copy {
+        width: 100%;
+        padding: 70px clamp(22px,6vw,58px) 0;
+        min-height: auto;
+    }
+
+    .hero {
+        display: block;
+        min-height: 0;
+        grid-template-columns: minmax(0, 1fr);
+        padding-right: 0;
+    }
+
+    .art {
+        position: relative;
+        height: 55vw;
+        min-height: 340px;
+        max-height: 540px;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        justify-self: stretch;
+    }
+
+    .art::before {
+        background: linear-gradient(180deg,var(--paper) 0%,rgba(247,242,241,0) 25%);
+    }
+
+    .copy h1 {
+        font-size: clamp(3.45rem,8vw,5.4rem);
+    }
+
+    .intro {
+        width: min(680px,100%);
+    }
+
+    .specialities {
+        max-width: 100%;
+    }
+
+    .panel-head {
+        display: block;
+    }
+
+    .section-desc {
+        margin-top: 22px;
+    }
+
+    .about-layout,.degree,.thesis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portrait {
+        max-width: 380px;
+        min-height: 340px;
+    }
+
+    .paper {
+        grid-template-columns: 60px 1fr;
+    }
+
+    .paper-action {
+        grid-column: 2;
+    }
+
+    .timeline-item {
+        grid-template-columns: 85px 1fr;
+    }
+
+    .timeline-tag {
+        grid-column: 2;
+    }
+
+    .education-entry {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Affiliation cards and consulting projects on small screens */
+@media (max-width:768px) {
+    #education .affiliations {
+        margin-top: 36px;
+        gap: 14px;
+    }
+
+    #education .affiliation {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
 
     #projects .consulting-heading {
         grid-template-columns: 1fr;
         gap: 20px;
     }
 
-    /* Keep the logo compact */
+    #projects .consulting-logo {
+        justify-self: start;
+        margin-left: 0;
+        max-width: 300px;
+    }
+
+    #projects .consulting-entry {
+        padding: 36px 0;
+    }
+
+    #projects .consulting-heading {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 
     #projects .consulting-logo {
         max-width: 255px;
@@ -722,23 +1726,200 @@ dialog{border:1px solid var(--line);background:var(--paper-2);color:var(--ink);w
     #projects .consulting-projects {
         margin-bottom: 60px;
     }
-
 }
 
-/* ==========================================
-   REDUCED MOTION
-========================================== */
 
-@media (prefers-reduced-motion: reduce) {
+/* Small phones */
+@media (max-width:580px) {
+    .masthead {
+        min-height: 68px;
+        padding: 0 12px;
+        gap: 6px;
+    }
 
-    #projects .consulting-logo {
+    .wordmark {
+        font-size: .74rem;
+        min-width: 0;
+        max-width: 115px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mast-right {
+        gap: 6px;
+    }
+
+    .social-links {
+        gap: 5px;
+    }
+
+    .social-links a {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+        padding: 0;
+        font-size: 11px;
+    }
+
+    .social-links svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    .menu-button {
+        font-size: .66rem;
+        padding: 8px 7px;
+    }
+
+    .copy {
+        padding-top: 65px;
+    }
+
+    .copy h1 {
+        font-size: clamp(3.05rem,12vw,4.3rem);
+        margin: 26px 0 22px;
+    }
+
+    .intro {
+        line-height: 1.75;
+        font-size: 1rem;
+    }
+
+    .specialities {
+        font-size: .92rem;
+        line-height: 1.75;
+    }
+
+    .art {
+        height: 370px;
+    }
+
+    .panel {
+        padding: 76px 0 28px;
+    }
+
+    .shell {
+        width: calc(100% - 44px);
+    }
+
+    .panel h2 {
+        font-size: clamp(2.6rem,10.5vw,3.1rem);
+    }
+
+    .paper {
+        grid-template-columns: 1fr;
+        gap: 11px;
+    }
+
+    .paper-action {
+        grid-column: 1;
+    }
+
+    .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .timeline-tag {
+        grid-column: 1;
+    }
+
+    .project-entry summary {
+        grid-template-columns: 28px 1fr 18px;
+        gap: 12px;
+    }
+
+    .project-body {
+        padding-left: 40px;
+    }
+
+    .education-marks {
+        grid-template-columns: repeat(3,minmax(0,1fr));
+        gap: 7px;
+    }
+
+    .education-marks>div {
+        padding: 12px 3px;
+    }
+
+    .education-marks small {
+        font-size: .64rem;
+    }
+
+    .gallery-heading {
+        align-items: start;
+    }
+}
+
+
+/* Publication cards: single column below 700px */
+@media (max-width:700px) {
+    .paper {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 12px;
+    }
+
+    .paper-ref, .paper-heading, .paper-action, .paper .paper-note {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .paper-ref {
+        padding-top: 0;
+    }
+
+    .paper-action {
+        justify-self: start;
+    }
+}
+
+
+
+/* ==========================================================================
+   15. REDUCED MOTION
+   Accessibility overrides, consolidated from the original blocks.
+   ========================================================================== */
+
+/* Remove motion and animated transitions when requested */
+@media (prefers-reduced-motion:reduce) {
+    html {
+        scroll-behavior: auto;
+        scroll-snap-type: none;
+    }
+
+    *,*::before,*::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+
+    .filter, .thesis-action, .thesis-action span, .consulting-logo, .consulting-logo-label span, .affiliation {
         transition: none;
     }
 
-    #projects .consulting-logo:hover {
+    .filter:hover, .thesis-action:hover, #projects .consulting-logo:hover, .affiliation:hover {
         transform: none;
     }
 
+    .gallery-controls button {
+        transition: none;
+    }
+
+    #projects .consulting-logo, .filter {
+        transition: none;
+    }
+
+    #projects .consulting-logo:hover, .filter:hover, .filter:active {
+        transform: none;
+    }
+
+    #portrait-image {
+        transform: none;
+        will-change: auto;
+    }
+
+    .thesis-action, .thesis-action span {
+        transition: none;
+    }
 }
 
 </style>
@@ -766,230 +1947,534 @@ dialog{border:1px solid var(--line);background:var(--paper-2);color:var(--ink);w
   </div>
 </header>
 <main>
-<section id="home" aria-labelledby="hero-heading">
-  <div class="hero">
-    <div class="copy">
-      <p class="eyebrow">Quantum science &amp; computational research</p>
-      <h1 id="hero-heading">Theoretical Physicist <span aria-hidden="true">&amp;</span><br><em> Quantum Researcher</em></h1>
-      <div class="specialities"> Quantum Computing </span>·<span aria-hidden="true"> Computational Physics</span> <span aria-hidden="true">·</span> Applied R &amp; D</div>
-      <p class="intro">I'm a theoretical physicist working at the intersection of quantum computing and applied research, with my current research focusing on quantum algorithms for applications in computer-aided engineering and computational fluid dynamics. My background is in theoretical condensed matter physics, in which I completed my PhD, and it has shaped the way I approach complex scientific problems, combining physical intuition, mathematical reasoning and computational methods.</p>
-      <a class="hero-down" href="#about">Find out more below <span aria-hidden="true">↓</span></a>
-    </div>
-    <div class="art" id="graphene-art" aria-label="Interactive curved hexagonal lattice. Move your pointer or tap to deform the surface.">
-      <img id="poster" src="./graphene_preview.jpg" alt="Curved red-to-blue graphene lattice, static image fallback">
-      <canvas id="graphene-canvas" aria-hidden="true"></canvas>
-    </div>
-  </div>
-  <!-- Kept for compatibility with the existing main.js, but not presented as prototype labels. -->
-  <div hidden><span id="model-mode">Preparing interactive lattice</span><span id="load-status">Checking 3D support</span><button id="reset" type="button" disabled>Reset surface</button></div>
-</section>
 
-<section class="panel" id="about" aria-labelledby="about-title">
-  <div class="about-glow-layer" aria-hidden="true"></div>
-  <div class="panel-content shell">
-  <header class="panel-head">
-    <div>
-      <div class="section-number">About me</div>
-  <h2 id="about-title">Theoretically curious,<em> but impact-driven</em>
-  </h2>
-</div>
-</header>
-  <div class="about-layout no-portrait" id="about-layout">
-    <!-- LEFT COLUMN: Portrait -->
-    <div class="portrait" id="about-portrait" hidden>
-      <img src="assets/portrait/portrait.png" alt="My PhD graduation picture" id="portrait-image">
-    </div>
-    <div class="about-copy">
-      <p>My passion for science started early on. Even at school, I could never quite get enough of maths and physics, which led me to take part in academic Olympiads and eventually pursue my studies in the UK. I've always enjoyed the challenge of understanding how things work and finding solutions to difficult problems, a curiosity that ultimately led me to a PhD in theoretical condensed matter physics at the University of Manchester.</p>
-      <p>Alongside my academic research, I also became involved in consulting projects, which introduced me to a different side of problem-solving. I began to appreciate not just the science behind an idea, but also its practical applications and the challenges of bringing it into the real world. These experiences gradually shaped my decision to move into industry, where I could combine my scientific background with a more applied approach.</p>
-      <p>In a way, my journey has brought me back to where I started. Quantum computing was one of my earliest research interests, dating back to my first undergraduate research mentorship. Today, I'm returning to that field with a much broader background in quantum physics, developing quantum algorithms for computer-aided engineering and computational fluid dynamics.</p>
-      <p>Outside of work, I love spending time outdoors and getting lost in the mountains, whether that's hiking, heading off on multi-day treks, tackling a via ferrata route or skiing in winter. When I can't escape to the mountains, I enjoy playing squash and indoor bouldering. I also love going to live musicals and concerts, getting creative with design, 3D printing and LEGO, getting lost in a good dystopian novel, or challenging myself with a puzzle or strategy board game.</p>
-    </div>
-  </div>
-  <!-- Optional photo gallery. Automatically appears once you add photos in assets/. -->
-  <div class="media-gallery" id="hobby-gallery" data-gallery="hobbies" hidden aria-label="Photographs from outside research">
-    <div class="gallery-heading">
-      <div><span class="tiny">BEYOND RESEARCH</span><h3>Life beyond the <em>research.</em></h3></div>
-      <div class="gallery-controls">
-        <button type="button" data-gallery-prev aria-label="Previous hobby photograph">←</button>
-        <button type="button" data-gallery-next aria-label="Next hobby photograph">→</button>
+  <!-- 01 / HOME · HERO AND GRAPHENE ARTWORK -->
+  <section id="home" aria-labelledby="hero-heading">
+    <div class="hero">
+      <div class="copy">
+        <p class="eyebrow">Quantum science &amp; computational research</p>
+        <h1 id="hero-heading">Theoretical Physicist <span aria-hidden="true">&amp;</span><br><em> Quantum Researcher</em></h1>
+        <div class="specialities">Quantum Computing </span>·<span aria-hidden="true"> Computational Physics</span> <span aria-hidden="true">·</span> Applied R &amp; D</div>
+        <p class="intro">I'm a theoretical physicist working at the intersection of quantum computing and applied research, with my current research focusing on quantum algorithms for applications in computer-aided engineering and computational fluid dynamics. My background is in theoretical condensed matter physics, in which I completed my PhD, and it has shaped the way I approach complex scientific problems, combining physical intuition, mathematical reasoning and computational methods.</p>
+        <a class="hero-down" href="#about">Find out more below <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="art" id="graphene-art" aria-label="Interactive curved hexagonal lattice. Move your pointer or tap to deform the surface.">
+        <img id="poster" src="./graphene_preview.jpg" alt="Curved red-to-blue graphene lattice, static image fallback">
+        <canvas id="graphene-canvas" aria-hidden="true"></canvas>
       </div>
     </div>
-    <figure class="gallery-figure"> <img data-gallery-image alt=""><figcaption data-gallery-caption></figcaption> </figure>
-    <p class="gallery-progress" data-gallery-progress aria-live="polite"></p>
-  </div>
-</div><a href="#publications" class="next-link shell">Next / Publications <span aria-hidden="true">↓</span></a></section>
+    <!-- Kept for compatibility with the existing main.js, but not presented as prototype labels. -->
+    <div hidden>
+      <span id="model-mode">Preparing interactive lattice</span>
+      <span id="load-status">Checking 3D support</span>
+      <button id="reset" type="button" disabled>Reset surface</button>
+    </div>
+  </section>
 
-<section class="panel" id="publications" aria-labelledby="publications-title"><div class="panel-content shell">
-  <header class="panel-head"><div><div class="section-number"> Selected publications</div><h2 id="publications-title"> Publications</h2></div><p class="section-desc">My published research in theoretical condensed matter physics.</p></header>
-<article class="paper"><span class="paper-ref">PAPER / 01</span><div class="paper-heading"><h3><span style="text-transform:uppercase"><span>Anomalous thermoelectric Hall response of interacting 2D Dirac fermions</span></h3><p class="paper-meta"><strong>A. Daria Dumitriu-I.</strong>, Feng Liu, Alexander E. Kazantsev, Alessandro Principi · arXiv · 2026</p></div><a href="https://arxiv.org/abs/2603.25705" target="_blank" rel="noopener noreferrer" class="paper-action"> READ MORE HERE <span aria-hidden="true">↗</span> </a><p class="paper-note placeholder">
-We study how interactions between electrons affect the sideways flow of heat and charge in a two-dimensional quantum system, even without an external magnetic field. After carefully removing contributions that do not represent actual transport, we find that the interacting thermoelectric Hall response unexpectedly remains non-zero as the temperature approaches absolute zero. We show that this surprising behaviour arises from quantum effects at extremely small length scales that influence the system's large-scale properties.</p></article>
-<article class="paper"><span class="paper-ref">PAPER / 02</span><div class="paper-heading"><h3><span style="text-transform:uppercase"><span></span>Broken Lorentz symmetry and violation of the Wiedemann-Franz law in topological insulators</span></h3><p class="paper-meta">Feng Liu, <strong>A. Daria Dumitriu-I.</strong>, Alessandro Principi · Physical Review B · 2025</p></div><a href="https://journals.aps.org/prb/abstract/10.1103/rm7z-l1md" target="_blank" rel="noopener noreferrer" class="paper-action"> READ MORE HERE <span aria-hidden="true">↗</span> </a><p class="paper-note placeholder">We study how temperature variations affect heat transport in a two-dimensional topological insulator, using a static nonuniform gravitational field to model these variations. We show that breaking the Lorentz symmetry by adding a Newtonian mass term to the theoretical model fundamentally changes its quantum behaviour, leading to a heat current flowing through the material's interior that violates the usual relationship between thermal and electrical conductivity.</p></article>
-<article class="paper"><span class="paper-ref">PAPER / 03</span><div class="paper-heading"><h3><span style="text-transform:uppercase"><span></span>No bulk thermal currents in massive Dirac fermions</span></h3><p class="paper-meta">Feng Liu, <strong>A. Daria Dumitriu-I.</strong>, Alessandro Principi · Physical Review B · 2024</p></div><a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.110.L081404" target="_blank" rel="noopener noreferrer" class="paper-action"> READ MORE HERE <span aria-hidden="true">↗</span> </a><p class="paper-note placeholder">We study how energy flows through the interior and along the boundaries of a two-dimensional quantum system with an interface where the electron mass changes sign. We resolve a longstanding debate in the literature by showing that, at low temperatures and over large length scales, temperature differences do not produce a thermal Hall current in the interior of the material. Instead, this current arises entirely from quantum states localised at the interface, correcting earlier theoretical predictions.</p></article>
-<article class="paper"><span class="paper-ref">PAPER / 04</span><div class="paper-heading"><h3><span style="text-transform:uppercase"><span></span>First-order effect of electron-electron interactions on the anomalous Hall conductivity of massive Dirac fermions</span></h3><p class="paper-meta"><strong>A. Daria Dumitriu-I.</strong>, Darius-A. Deaconu, Alexander E. Kazantsev, and Alessandro Principi · Physical Review B · 2024</p></div><a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.165429" target="_blank" rel="noopener noreferrer" class="paper-action"> READ MORE HERE <span aria-hidden="true">↗</span> </a><p class="paper-note placeholder">We study how interactions between electrons affect the sideways flow of electrical current in a two-dimensional quantum system when there is no magnetic field applied. We show that these interactions do not alter the topological quantum behaviour expected at zero temperature in a fully gapped system, confirming a fundamental theoretical prediction. However, at finite temperatures or material doping, interactions cause the Hall response to decrease more rapidly than in the noninteracting case, with potentially observable experimental consequences.</p></article>
-</div><a href="#thesis" class="next-link shell">Next / PhD thesis <span aria-hidden="true">↓</span></a></section>
-<section class="panel" id="thesis" aria-labelledby="thesis-title"><div class="panel-content shell">
-  <header class="panel-head"><div><div class="section-number">Doctoral thesis</div><h2 id="thesis-title">PhD <em>thesis</em></h2></div><p class="section-desc">A closer look at my PhD research in theoretical condensed matter physics at the University of Manchester and the Graphene NOWNANO Centre for Doctoral Training.</p></header>
-  <div class="thesis-grid"><div><div class="tiny">COMPLETED · MARCH 2026</div><h3><span style="text-transform:uppercase"><span></span>The interplay between topology, geometry and correlations in anomalous thermoelectric transport</span></h3><div class="thesis-supervisor">
-  Alessandro Principi (Main Supervisor) · Mohammad Saeed Bahramy (Co-Supervisor) · Vladimir Falko (Co-Supervisor)
-</div><a href="https://research.manchester.ac.uk/en/studentTheses/the-interplay-between-topology-geometry-and-correlations-in-anoma/" target="_blank" rel="noopener noreferrer" class="thesis-action"> READ THE FULL THESIS HERE <span aria-hidden="true">↗</span> </a></div>
-  <div class="abstract"><h3>Abstract</h3><p>This thesis studies anomalous thermoelectric transport in two-dimensional systems with broken time-reversal symmetry, focusing on the interplay between topology, band geometry, and electron-electron interactions. We develop a general theoretical framework to distinguish genuine transport from currents that circulate within the material, and then investigate how electron interactions affect these transport phenomena. We show that the topological electrical Hall response remains unchanged at very low temperatures in fully gapped systems, but can be significantly reduced outside this regime. Surprisingly, we find that existing theoretical methods fail to correctly describe certain thermoelectric effects when electron interactions are included, highlighting the need to revise the current theoretical framework.</p></div></div>
-<!-- Optional figures gallery -->
-
-<!-- ADD THIS OPENING DIV -->
-<div class="figure-gallery" id="thesis-gallery" data-gallery="thesis">
-
-    <div class="gallery-heading">
+  <!-- 02 / ABOUT ME · BIOGRAPHY, PORTRAIT AND HOBBY GALLERY -->
+  <section class="panel" id="about" aria-labelledby="about-title">
+    <div class="about-glow-layer" aria-hidden="true"></div>
+    <div class="panel-content shell">
+      <header class="panel-head">
         <div>
-            <span class="tiny">SELECTED FIGURES FROM THE THESIS</span>
+          <div class="section-number">About me</div>
+          <h2 id="about-title">Theoretically curious,<em> but impact-driven</em></h2>
         </div>
-
-        <div class="gallery-controls">
-            <button type="button" data-gallery-prev
-                    aria-label="Previous thesis figure">←</button>
-
-            <button type="button" data-gallery-next
-                    aria-label="Next thesis figure">→</button>
+      </header>
+      <div class="about-layout no-portrait" id="about-layout">
+        <!-- LEFT COLUMN: Portrait -->
+        <div class="portrait" id="about-portrait" hidden>
+          <img src="assets/portrait/portrait.png" alt="My PhD graduation picture" id="portrait-image">
         </div>
+        <div class="about-copy">
+          <p>My passion for science started early on. Even at school, I could never quite get enough of maths and physics, which led me to take part in academic Olympiads and eventually pursue my studies in the UK. I've always enjoyed the challenge of understanding how things work and finding solutions to difficult problems, a curiosity that ultimately led me to a PhD in theoretical condensed matter physics at the University of Manchester.</p>
+          <p>Alongside my academic research, I also became involved in consulting projects, which introduced me to a different side of problem-solving. I began to appreciate not just the science behind an idea, but also its practical applications and the challenges of bringing it into the real world. These experiences gradually shaped my decision to move into industry, where I could combine my scientific background with a more applied approach.</p>
+          <p>In a way, my journey has brought me back to where I started. Quantum computing was one of my earliest research interests, dating back to my first undergraduate research mentorship. Today, I'm returning to that field with a much broader background in quantum physics, developing quantum algorithms for computer-aided engineering and computational fluid dynamics.</p>
+          <p>Outside of work, I love spending time outdoors and getting lost in the mountains, whether that's hiking, heading off on multi-day treks, tackling a via ferrata route or skiing in winter. When I can't escape to the mountains, I enjoy playing squash and indoor bouldering. I also love going to live musicals and concerts, getting creative with design, 3D printing and LEGO, getting lost in a good dystopian novel, or challenging myself with a puzzle or strategy board game.</p>
+        </div>
+      </div>
+      <!-- Optional photo gallery. Automatically appears once you add photos in assets/. -->
+      <div class="media-gallery" id="hobby-gallery" data-gallery="hobbies" hidden aria-label="Photographs from outside research">
+        <div class="gallery-heading">
+          <div>
+            <span class="tiny">BEYOND RESEARCH</span>
+            <h3>Life beyond the <em>research.</em></h3>
+          </div>
+          <div class="gallery-controls">
+            <button type="button" data-gallery-prev aria-label="Previous hobby photograph">←</button>
+            <button type="button" data-gallery-next aria-label="Next hobby photograph">→</button>
+          </div>
+        </div>
+        <figure class="gallery-figure">
+          <img data-gallery-image alt="">
+          <figcaption data-gallery-caption></figcaption>
+        </figure>
+        <p class="gallery-progress" data-gallery-progress aria-live="polite"></p>
+      </div>
     </div>
+    <a href="#publications" class="next-link shell">Next / Publications <span aria-hidden="true">↓</span></a>
+  </section>
 
-    <figure class="gallery-figure">
-      <div class="thesis-image-stage">
-        <img data-gallery-image alt=""></div>
-        <figcaption data-gallery-caption></figcaption>
-    </figure>
+  <!-- 03 / SELECTED PUBLICATIONS -->
+  <section class="panel" id="publications" aria-labelledby="publications-title">
+    <div class="panel-content shell">
+      <header class="panel-head">
+        <div>
+          <div class="section-number">Selected publications</div>
+          <h2 id="publications-title">Publications</h2>
+        </div>
+        <p class="section-desc">My published research in theoretical condensed matter physics.</p>
+      </header>
+      <article class="paper">
+        <span class="paper-ref">PAPER / 01</span>
+        <div class="paper-heading">
+          <h3><span style="text-transform:uppercase"><span>Anomalous thermoelectric Hall response of interacting 2D Dirac fermions</span></h3>
+          <p class="paper-meta"><strong>A. Daria Dumitriu-I.</strong>, Feng Liu, Alexander E. Kazantsev, Alessandro Principi · arXiv · 2026</p>
+        </div>
+        <a href="https://arxiv.org/abs/2603.25705" target="_blank" rel="noopener noreferrer" class="paper-action">READ MORE HERE <span aria-hidden="true">↗</span></a>
+        <p class="paper-note placeholder">We study how interactions between electrons affect the sideways flow of heat and charge in a two-dimensional quantum system, even without an external magnetic field. After carefully removing contributions that do not represent actual transport, we find that the interacting thermoelectric Hall response unexpectedly remains non-zero as the temperature approaches absolute zero. We show that this surprising behaviour arises from quantum effects at extremely small length scales that influence the system's large-scale properties.</p>
+      </article>
+      <article class="paper">
+        <span class="paper-ref">PAPER / 02</span>
+        <div class="paper-heading">
+          <h3><span style="text-transform:uppercase"><span></span>Broken Lorentz symmetry and violation of the Wiedemann-Franz law in topological insulators</span></h3>
+          <p class="paper-meta">Feng Liu, <strong>A. Daria Dumitriu-I.</strong>, Alessandro Principi · Physical Review B · 2025</p>
+        </div>
+        <a href="https://journals.aps.org/prb/abstract/10.1103/rm7z-l1md" target="_blank" rel="noopener noreferrer" class="paper-action">READ MORE HERE <span aria-hidden="true">↗</span></a>
+        <p class="paper-note placeholder">We study how temperature variations affect heat transport in a two-dimensional topological insulator, using a static nonuniform gravitational field to model these variations. We show that breaking the Lorentz symmetry by adding a Newtonian mass term to the theoretical model fundamentally changes its quantum behaviour, leading to a heat current flowing through the material's interior that violates the usual relationship between thermal and electrical conductivity.</p>
+      </article>
+      <article class="paper">
+        <span class="paper-ref">PAPER / 03</span>
+        <div class="paper-heading">
+          <h3><span style="text-transform:uppercase"><span></span>No bulk thermal currents in massive Dirac fermions</span></h3>
+          <p class="paper-meta">Feng Liu, <strong>A. Daria Dumitriu-I.</strong>, Alessandro Principi · Physical Review B · 2024</p>
+        </div>
+        <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.110.L081404" target="_blank" rel="noopener noreferrer" class="paper-action">READ MORE HERE <span aria-hidden="true">↗</span></a>
+        <p class="paper-note placeholder">We study how energy flows through the interior and along the boundaries of a two-dimensional quantum system with an interface where the electron mass changes sign. We resolve a longstanding debate in the literature by showing that, at low temperatures and over large length scales, temperature differences do not produce a thermal Hall current in the interior of the material. Instead, this current arises entirely from quantum states localised at the interface, correcting earlier theoretical predictions.</p>
+      </article>
+      <article class="paper">
+        <span class="paper-ref">PAPER / 04</span>
+        <div class="paper-heading">
+          <h3><span style="text-transform:uppercase"><span></span>First-order effect of electron-electron interactions on the anomalous Hall conductivity of massive Dirac fermions</span></h3>
+          <p class="paper-meta"><strong>A. Daria Dumitriu-I.</strong>, Darius-A. Deaconu, Alexander E. Kazantsev, and Alessandro Principi · Physical Review B · 2024</p>
+        </div>
+        <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.165429" target="_blank" rel="noopener noreferrer" class="paper-action">READ MORE HERE <span aria-hidden="true">↗</span></a>
+        <p class="paper-note placeholder">We study how interactions between electrons affect the sideways flow of electrical current in a two-dimensional quantum system when there is no magnetic field applied. We show that these interactions do not alter the topological quantum behaviour expected at zero temperature in a fully gapped system, confirming a fundamental theoretical prediction. However, at finite temperatures or material doping, interactions cause the Hall response to decrease more rapidly than in the noninteracting case, with potentially observable experimental consequences.</p>
+      </article>
+    </div>
+    <a href="#thesis" class="next-link shell">Next / PhD thesis <span aria-hidden="true">↓</span></a>
+  </section>
 
-    <p class="gallery-progress"
+  <!-- 04 / PHD THESIS AND FIGURE GALLERY -->
+  <section class="panel" id="thesis" aria-labelledby="thesis-title">
+    <div class="panel-content shell">
+      <header class="panel-head">
+        <div>
+          <div class="section-number">Doctoral thesis</div>
+          <h2 id="thesis-title">PhD <em>thesis</em></h2>
+        </div>
+        <p class="section-desc">A closer look at my PhD research in theoretical condensed matter physics at the University of Manchester and the Graphene NOWNANO Centre for Doctoral Training.</p>
+      </header>
+
+      <!-- Thesis details and abstract -->
+      <div class="thesis-grid">
+        <div>
+          <div class="tiny">COMPLETED · MARCH 2026</div>
+          <h3><span style="text-transform:uppercase"><span></span>The interplay between topology, geometry and correlations in anomalous thermoelectric transport</span></h3>
+          <div class="thesis-supervisor">Alessandro Principi (Main Supervisor) · Mohammad Saeed Bahramy (Co-Supervisor) · Vladimir Falko (Co-Supervisor)</div>
+          <a href="https://research.manchester.ac.uk/en/studentTheses/the-interplay-between-topology-geometry-and-correlations-in-anoma/" target="_blank" rel="noopener noreferrer" class="thesis-action">READ THE FULL THESIS HERE <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="abstract">
+          <h3>Abstract</h3>
+          <p>This thesis studies anomalous thermoelectric transport in two-dimensional systems with broken time-reversal symmetry, focusing on the interplay between topology, band geometry, and electron-electron interactions. We develop a general theoretical framework to distinguish genuine transport from currents that circulate within the material, and then investigate how electron interactions affect these transport phenomena. We show that the topological electrical Hall response remains unchanged at very low temperatures in fully gapped systems, but can be significantly reduced outside this regime. Surprisingly, we find that existing theoretical methods fail to correctly describe certain thermoelectric effects when electron interactions are included, highlighting the need to revise the current theoretical framework.</p>
+        </div>
+      </div>
+      <!-- Optional figures gallery -->
+
+      <!-- Thesis figure slider -->
+      <div class="figure-gallery" id="thesis-gallery" data-gallery="thesis">
+        <div class="gallery-heading">
+          <div><span class="tiny">SELECTED FIGURES FROM THE THESIS</span></div>
+          <div class="gallery-controls">
+            <button type="button" data-gallery-prev
+
+                    aria-label="Previous thesis figure">←</button>
+            <button type="button" data-gallery-next
+
+                    aria-label="Next thesis figure">→</button>
+          </div>
+        </div>
+        <figure class="gallery-figure">
+          <div class="thesis-image-stage"><img data-gallery-image alt=""></div>
+          <figcaption data-gallery-caption></figcaption>
+        </figure>
+        <p class="gallery-progress"
+
        data-gallery-progress
+
        aria-live="polite"></p>
-
-<!-- ADD THIS CLOSING DIV -->
-</div>
-</div><a href="#education" class="next-link shell">Next / Education <span aria-hidden="true">↓</span></a></section>
-
-<section class="panel" id="education" aria-labelledby="education-title"><div class="panel-content shell">
-  <header class="panel-head"><div><div class="section-number">Academic foundation / Education</div><h2 id="education-title">Education</em></h2></div><p class="section-desc">From my early education in Romania to postgraduate research in the United Kingdom.</p></header>
-  <div class="education-stack">
-    <article class="education-entry">
-      <div class="education-info">
-        <div class="tiny">01 / DOCTORATE · COMPLETED 2026</div>
-        <h3>PhD in Theoretical Condensed Matter Physics</h3>
-        <p class="education-place">University of Manchester · Graphene NowNano Centre for Doctoral Training · Manchester, UK</p>
-        <p>My PhD began with six months of lectures and hands-on laboratory projects through the Graphene NOWNANO CDT, which gave me the chance to explore topics well beyond my usual corner of physics. From nanofabrication and experimental characterisation techniques to applications in nanomedicine, I got to experience the more practical side of materials science, often working in small teams with colleagues from chemistry, engineering, biology and other backgrounds. I also enjoyed talking about science with people of all ages and levels of knowledge through outreach activities, as well as learning new skills through courses like media training and project management. Outside of my research and CDT training, I served as the Postgraduate Representative for the Physics & Astronomy Department, working with senior leadership and helping make sure the voices of over 200 postgraduate researchers were heard.</p>
       </div>
-    </article>
-    <article class="education-entry">
-      <div class="education-info">
-        <div class="tiny">02 / MASTER'S DEGREE · COMPLETED 2021</div>
-        <h3>MPhys Physics with Theoretical Physics</h3>
-        <p class="education-place">University of Manchester · Manchester, UK</p>
-        <p>Throughout my MPhys, I was consistently among the top students in my year, and in my third year I ranked first out of around 300 students, receiving the Hatfield–Heginbottom Scholarship. I also spent all four summers doing research, starting with a quantum computing mentorship at IFIN-HH in Bucharest (2018), followed by theoretical condensed matter physics internships at the University of Manchester (2019 and 2020) and at the Max Planck Institute for the Physics of Complex Systems in Dresden (2021).</p>
+    </div>
+    <a href="#education" class="next-link shell">Next / Education <span aria-hidden="true">↓</span></a>
+  </section>
+
+  <!-- 05 / EDUCATION AND INSTITUTION LOGOS -->
+  <section class="panel" id="education" aria-labelledby="education-title">
+    <div class="panel-content shell">
+      <header class="panel-head">
+        <div>
+          <div class="section-number">Academic foundation / Education</div>
+          <h2 id="education-title">Education</em></h2>
+        </div>
+        <p class="section-desc">From my early education in Romania to postgraduate research in the United Kingdom.</p>
+      </header>
+
+      <!-- Education entries -->
+      <div class="education-stack">
+        <article class="education-entry">
+          <div class="education-info">
+            <div class="tiny">01 / DOCTORATE · COMPLETED 2026</div>
+            <h3>PhD in Theoretical Condensed Matter Physics</h3>
+            <p class="education-place">University of Manchester · Graphene NowNano Centre for Doctoral Training · Manchester, UK</p>
+            <p>My PhD began with six months of lectures and hands-on laboratory projects through the Graphene NOWNANO CDT, which gave me the chance to explore topics well beyond my usual corner of physics. From nanofabrication and experimental characterisation techniques to applications in nanomedicine, I got to experience the more practical side of materials science, often working in small teams with colleagues from chemistry, engineering, biology and other backgrounds. I also enjoyed talking about science with people of all ages and levels of knowledge through outreach activities, as well as learning new skills through courses like media training and project management. Outside of my research and CDT training, I served as the Postgraduate Representative for the Physics & Astronomy Department, working with senior leadership and helping make sure the voices of over 200 postgraduate researchers were heard.</p>
+          </div>
+        </article>
+        <article class="education-entry">
+          <div class="education-info">
+            <div class="tiny">02 / MASTER'S DEGREE · COMPLETED 2021</div>
+            <h3>MPhys Physics with Theoretical Physics</h3>
+            <p class="education-place">University of Manchester · Manchester, UK</p>
+            <p>Throughout my MPhys, I was consistently among the top students in my year, and in my third year I ranked first out of around 300 students, receiving the Hatfield–Heginbottom Scholarship. I also spent all four summers doing research, starting with a quantum computing mentorship at IFIN-HH in Bucharest (2018), followed by theoretical condensed matter physics internships at the University of Manchester (2019 and 2020) and at the Max Planck Institute for the Physics of Complex Systems in Dresden (2021).</p>
+          </div>
+        </article>
+        <article class="education-entry">
+          <div class="education-info">
+            <div class="tiny">03 / EARLIER ACADEMIC YEARS · ROMANIA · COMPLETED 2017</div>
+            <h3>Earlier Education (A-Levels Equivalent)</h3>
+            <p class="education-place">"Iancu de Hunedoara" National College · Hunedoara, Romania</p>
+            <p>I've always been passionate about mathematics and physics, and spent much of my school years challenging myself beyond the classroom by taking part in national Olympiads, where I won two gold medals in Mathematics and two bronze medals in Physics. I finished high school in the top 0.3% nationwide in the Romanian Baccalaureate, with perfect scores in both Mathematics and Physics. I also enjoyed learning languages, particularly English and French, and took the IELTS and DELF B1 exams, while also attending part-time the Folk School of Arts, where I learnt music theory and played classical guitar. Outside school, I spent a lot of my free time volunteering, both at a local day centre and at summer camps for children and adults with disabilities.</p>
+          </div>
+        </article>
       </div>
-    </article>
-    <article class="education-entry">
-      <div class="education-info">
-        <div class="tiny">03 / EARLIER ACADEMIC YEARS · ROMANIA · COMPLETED 2017</div>
-        <h3>Earlier Education (A-Levels Equivalent)</h3>
-        <p class="education-place">"Iancu de Hunedoara" National College · Hunedoara, Romania</p>
-        <p>I've always been passionate about mathematics and physics, and spent much of my school years challenging myself beyond the classroom by taking part in national Olympiads, where I won two gold medals in Mathematics and two bronze medals in Physics. I finished high school in the top 0.3% nationwide in the Romanian Baccalaureate, with perfect scores in both Mathematics and Physics. I also enjoyed learning languages, particularly English and French, and took the IELTS and DELF B1 exams, while also attending part-time the Folk School of Arts, where I learnt music theory and played classical guitar. Outside school, I spent a lot of my free time volunteering, both at a local day centre and at summer camps for children and adults with disabilities.</p></div>
-     </article>
-  </div>
-  <div class="affiliations">
+
+      <!-- Institution links -->
+      <div class="affiliations">
         <a class="affiliation" href="https://www.manchester.ac.uk/" target="_blank" rel="noopener noreferrer"><span class="logo-fallback" data-logo-fallback="manchester">University of<br>Manchester</span><img src="assets/logos/manchester-logo.png" alt="University of Manchester logo" data-logo-img hidden><span><strong>University of Manchester</strong><small>Doctoral institution ↗</small></span></a>
         <a class="affiliation" href="https://www.graphene-nownano.manchester.ac.uk/" target="_blank" rel="noopener noreferrer"><span class="logo-fallback" data-logo-fallback="cdt">Graphene<br>NowNano CDT</span><img src="assets/logos/cdt-logo.png" alt="Graphene NowNano CDT logo" data-logo-img hidden><span><strong>Graphene NowNano CDT</strong><small>Interdisciplinary doctoral training ↗</small></span></a>
       </div>
-</div><a href="#experience" class="next-link shell">Next / Highlights <span aria-hidden="true">↓</span></a></section>
-
-<section class="panel" id="experience" aria-labelledby="experience-title"><div class="panel-content shell">
-  <header class="panel-head"><div><div class="section-number">Academic Experiences / Highlights</div><h2 id="experience-title">Along the <em>way</em></h2></div><p class="section-desc">My academic journey has taken me to conferences and summer schools around the world, given me opportunities to teach, and also brought recognition for my work.</p></header>
-  <div class="filters" role="group" aria-label="Experience category"><button class="filter" type="button" data-filter="conference" aria-pressed="true">Conferences &amp; Schools</button><button class="filter" type="button" data-filter="teaching" aria-pressed="false">Teaching</button><button class="filter" type="button" data-filter="award" aria-pressed="false">Awards</button></div>
-  <p class="timeline-count" id="timeline-count" role="status">9 ENTRIES · CONFERENCES &amp; SCHOOLS</p>
-<ol class="timeline" id="experience-timeline"><li class="timeline-item" data-category="conference"><span class="timeline-year">MAY 2025</span><div><h3><a href="https://cinerama.dipc.org/" rel="noopener noreferrer" target="_blank">CINERAMA25</a></h3><p>San Sebastián, Spain · 26–30 May 2025</p></div><span class="timeline-tag">Conference</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">MAR 2025</span><div><h3><a href="https://summit.aps.org/" rel="noopener noreferrer" target="_blank">Global Physics Summit</a></h3><p>Anaheim, California · 16–21 March 2025</p></div><span class="timeline-tag">Conference</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">SEP 2024</span><div><h3><a href="https://cmd31.sci-meet.net/" rel="noopener noreferrer" target="_blank">CMD31</a></h3><p>Braga, Portugal · 1–6 September 2024</p></div><span class="timeline-tag">Conference</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">SEP 2023</span><div><h3><a href="https://www.ctqmat.de/en/events/2023-09-27-second-fall-school-topological-quantum-matter" rel="noopener noreferrer" target="_blank">Topological Quantum Matter Fall School</a></h3><p>Leipzig, Germany · 27–29 September 2023</p></div><span class="timeline-tag">School</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">AUG 2023</span><div><h3><a href="http://tms23.dipc.org/" rel="noopener noreferrer" target="_blank">Topological Matter School</a></h3><p>San Sebastián, Spain · 20–25 August 2023</p></div><span class="timeline-tag">School</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">JUN 2023</span><div><h3><a href="https://www.grapheneconf.com/2023/" rel="noopener noreferrer" target="_blank">Graphene2023</a></h3><p>Manchester, England · 27–30 June 2023</p></div><span class="timeline-tag">Conference</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">MAR 2023</span><div><h3><a href="https://indico.ictp.it/event/10062/" rel="noopener noreferrer" target="_blank">Conference and Advanced School on Low-Dimensional Quantum Systems</a></h3><p>Santiago, Chile · 13–24 March 2023</p></div><span class="timeline-tag">School</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">AUG 2022</span><div><h3><a href="https://www.iop.org/events/cmd-29" rel="noopener noreferrer" target="_blank">CMD29</a></h3><p>Manchester, England · 21–26 August 2022</p></div><span class="timeline-tag">Conference</span></li><li class="timeline-item" data-category="conference"><span class="timeline-year">AUG 2022</span><div><h3><a href="https://physicsbythelake.org/" rel="noopener noreferrer" target="_blank">Physics by the Lake Summer School</a></h3><p>Stirling, Scotland · 1–12 August 2022</p></div><span class="timeline-tag">School</span></li><li class="timeline-item" data-category="award" hidden=""><span class="timeline-year">APR 2025</span><div><h3>Associate Fellow (AFHEA)</h3><p>Awarded by Advance HE · April 2025</p></div><span class="timeline-tag">Recognition</span></li><li class="timeline-item" data-category="award" hidden=""><span class="timeline-year">SEP 2024</span><div><h3>Best Poster Prize</h3><p>Annual PGR Conference, Department of Physics, University of Manchester · September 2024</p></div><span class="timeline-tag">Award</span></li><li class="timeline-item" data-category="award" hidden=""><span class="timeline-year">JUN 2024</span><div><h3>Best Talk Prize</h3><p>Annual CDT Conference, Graphene NowNano CDT · June 2024</p></div><span class="timeline-tag">Award</span></li><li class="timeline-item" data-category="award" hidden=""><span class="timeline-year">AUG 2020</span><div><h3>Hatfield-Heginbottom Scholarship</h3><p>Awarded to the best-performing third-year student, University of Manchester · August 2020</p></div><span class="timeline-tag">Award</span></li><li class="timeline-item" data-category="teaching" hidden=""><span class="timeline-year">2021–2023</span><div><h3><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10101#course-unit-details" rel="noopener noreferrer" target="_blank">Dynamics</a></h3><p>First-year weekly workshops · September–December 2021, 2022 and 2023</p></div><span class="timeline-tag">Teaching</span></li><li class="timeline-item" data-category="teaching" hidden=""><span class="timeline-year">2021–2023</span><div><h3><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10071#course-unit-details" rel="noopener noreferrer" target="_blank">Mathematics 1</a></h3><p>First-year weekly workshops · September–December 2021, 2022 and 2023</p></div><span class="timeline-tag">Teaching</span></li><li class="timeline-item" data-category="teaching" hidden=""><span class="timeline-year">2022–2023</span><div><h3><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10180#course-unit-details" rel="noopener noreferrer" target="_blank">General Laboratory</a></h3><p>First-year laboratory teaching · 2022–2023</p></div><span class="timeline-tag">Teaching</span></li></ol></div><a href="#projects" class="next-link shell">Next / Selected projects <span aria-hidden="true">↓</span></a></section>
-
-<section class="panel" id="projects" aria-labelledby="projects-title"><div class="panel-content shell">
-  <header class="panel-head"><div><div class="section-number">Selected projects/ Consulting &amp; research </div><h2 id="projects-title"> Consulting &amp; <em>research projects</em></h2></div><p class="section-desc">Beyond my doctoral research, I've had the opportunity to explore a range of projects, from consulting and research commercialisation to interdisciplinary CDT projects and earlier undergraduate work.</p></header>
-<!-- ==========================================
-     CONSULTING & COMMERCIALISATION
-========================================== -->
-
-<h3 class="project-section-heading">
-  Consulting &amp; Commercialisation
-</h3>
-
-<p class="archive-intro">
-Alongside my academic work, I had the chance to take part in two substantial consulting projects, one with Cambridge EnterpriseTECH and another with the Manchester branch of 180 Degrees Consulting. As part of the Cambridge EnterpriseTECH programme, I also completed a ten-week course in research commercialisation at Cambridge Judge Business School, University of Cambridge. Together, these experiences gave me the opportunity to approach problems from a different perspective, explore how scientific ideas can be developed into real-world applications, and learn more about the commercial side of research.
-</p>
-<div class="consulting-projects">
-<article class="consulting-entry">
-
-    <div class="consulting-heading">
-      <div class="consulting-heading-text">
-        <div class="consulting-number">
-    01 / CONSULTING PROJECT
-  </div>
-    <h4>Cambridge EnterpriseTECH</h4> <div class="consulting-institution"> Cohort 14 · Cambridge Judge Business School · Cambridge, UK </div> </div> <a class="consulting-logo" href="https://www.jbs.cam.ac.uk/entrepreneurship/programmes/enterprisetech/" target="_blank" rel="noopener noreferrer" aria-label="Visit Cambridge EnterpriseTECH"> <img src="assets/logos/cambridge-enterprise-tech-logo.png" alt="Cambridge Judge Business School logo" loading="lazy" > <small class="consulting-logo-label">
-    EnterpriseTECH Programme <span aria-hidden="true">↗</span> </small></a> </div>
-  <div class="consulting-text">
-      <p>
-        As part of the EnterpriseTECH programme at Cambridge Judge Business School (Cohort 14), I worked in a multidisciplinary team on a project for Cambridge Surgical Models, an early-stage startup developing realistic artificial anatomical models for surgical training and medical education. Over the 10-week programme, we explored the commercial potential of their technology, surveying and interviewing a combined total of almost 200 medical students, doctors and medical educators, and researching the competitive landscape, potential customers and routes to market. We used this research to assess the product's commercial feasibility, estimate the UK market size and develop recommendations for the startup's business strategy. Our final deliverables included a detailed commercial feasibility report, a short promotional infomercial and a pitch deck, which we presented to a panel of judges.
-        <!-- I particularly enjoyed working with people from different scientific and medical backgrounds and learning how to approach a research-driven technology from a business perspective, from understanding customer needs to building and pitching a commercial proposition. -->
-      </p>
-
     </div>
+    <a href="#experience" class="next-link shell">Next / Highlights <span aria-hidden="true">↓</span></a>
+  </section>
 
-  </article>
-  <!-- 180 Degrees Consulting -->
-
-  <article class="consulting-entry">
-    <div class="consulting-heading">
-      <div class="consulting-heading-text">
-  <div class="consulting-number">
-    02 / CONSULTING PROJECT
-  </div>
-   <h4>180 Degrees Consulting</h4> <div class="consulting-institution"> University of Manchester Branch · Manchester, UK </div> </div> <a class="consulting-logo" href="https://180dc.org/branches/university-of-manchester" target="_blank" rel="noopener noreferrer" aria-label="Visit 180 Degrees Consulting"> <img src="assets/logos/180-degrees-consulting-logo.png" alt="180 Degrees Consulting logo" loading="lazy" > <small class="consulting-logo-label">
-    180DC Manchester Branch <span aria-hidden="true">↗</span> </small> </a> </div> <div class="consulting-text">
-      <p>
-        As part of 180 Degrees Consulting Manchester, I worked on a project for HippocratesAI, a startup developing AI-powered tools for healthcare and medical education. Our team surveyed around 50 medical students and healthcare professionals to better understand their experiences with AI, their needs and concerns, and what they would look for in such a product. We also researched competing technologies, compared different UK healthcare markets, and explored potential routes into the NHS, GP practices and universities. We brought all this together into a detailed report and presentation with recommendations on the company's market entry and growth strategy.
-        <!-- I particularly enjoyed exploring the practical challenges of introducing AI into healthcare, where technological innovation has to be balanced with regulation, trust and the needs of medical professionals. -->
-      </p>
-
+  <!-- 06 / ACADEMIC HIGHLIGHTS · FILTERED TIMELINE -->
+  <section class="panel" id="experience" aria-labelledby="experience-title">
+    <div class="panel-content shell">
+      <header class="panel-head">
+        <div>
+          <div class="section-number">Academic Experiences / Highlights</div>
+          <h2 id="experience-title">Along the <em>way</em></h2>
+        </div>
+        <p class="section-desc">My academic journey has taken me to conferences and summer schools around the world, given me opportunities to teach, and also brought recognition for my work.</p>
+      </header>
+      <div class="filters" role="group" aria-label="Experience category">
+        <button class="filter" type="button" data-filter="conference" aria-pressed="true">Conferences &amp; Schools</button>
+        <button class="filter" type="button" data-filter="teaching" aria-pressed="false">Teaching</button>
+        <button class="filter" type="button" data-filter="award" aria-pressed="false">Awards</button>
+      </div>
+      <p class="timeline-count" id="timeline-count" role="status">9 ENTRIES · CONFERENCES &amp; SCHOOLS</p>
+      <ol class="timeline" id="experience-timeline">
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">MAY 2025</span>
+          <div>
+            <h3><a href="https://cinerama.dipc.org/" rel="noopener noreferrer" target="_blank">CINERAMA25</a></h3>
+            <p>San Sebastián, Spain · 26–30 May 2025</p>
+          </div>
+          <span class="timeline-tag">Conference</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">MAR 2025</span>
+          <div>
+            <h3><a href="https://summit.aps.org/" rel="noopener noreferrer" target="_blank">Global Physics Summit</a></h3>
+            <p>Anaheim, California · 16–21 March 2025</p>
+          </div>
+          <span class="timeline-tag">Conference</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">SEP 2024</span>
+          <div>
+            <h3><a href="https://cmd31.sci-meet.net/" rel="noopener noreferrer" target="_blank">CMD31</a></h3>
+            <p>Braga, Portugal · 1–6 September 2024</p>
+          </div>
+          <span class="timeline-tag">Conference</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">SEP 2023</span>
+          <div>
+            <h3><a href="https://www.ctqmat.de/en/events/2023-09-27-second-fall-school-topological-quantum-matter" rel="noopener noreferrer" target="_blank">Topological Quantum Matter Fall School</a></h3>
+            <p>Leipzig, Germany · 27–29 September 2023</p>
+          </div>
+          <span class="timeline-tag">School</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">AUG 2023</span>
+          <div>
+            <h3><a href="http://tms23.dipc.org/" rel="noopener noreferrer" target="_blank">Topological Matter School</a></h3>
+            <p>San Sebastián, Spain · 20–25 August 2023</p>
+          </div>
+          <span class="timeline-tag">School</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">JUN 2023</span>
+          <div>
+            <h3><a href="https://www.grapheneconf.com/2023/" rel="noopener noreferrer" target="_blank">Graphene2023</a></h3>
+            <p>Manchester, England · 27–30 June 2023</p>
+          </div>
+          <span class="timeline-tag">Conference</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">MAR 2023</span>
+          <div>
+            <h3><a href="https://indico.ictp.it/event/10062/" rel="noopener noreferrer" target="_blank">Conference and Advanced School on Low-Dimensional Quantum Systems</a></h3>
+            <p>Santiago, Chile · 13–24 March 2023</p>
+          </div>
+          <span class="timeline-tag">School</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">AUG 2022</span>
+          <div>
+            <h3><a href="https://www.iop.org/events/cmd-29" rel="noopener noreferrer" target="_blank">CMD29</a></h3>
+            <p>Manchester, England · 21–26 August 2022</p>
+          </div>
+          <span class="timeline-tag">Conference</span>
+        </li>
+        <li class="timeline-item" data-category="conference">
+          <span class="timeline-year">AUG 2022</span>
+          <div>
+            <h3><a href="https://physicsbythelake.org/" rel="noopener noreferrer" target="_blank">Physics by the Lake Summer School</a></h3>
+            <p>Stirling, Scotland · 1–12 August 2022</p>
+          </div>
+          <span class="timeline-tag">School</span>
+        </li>
+        <li class="timeline-item" data-category="award" hidden="">
+          <span class="timeline-year">APR 2025</span>
+          <div>
+            <h3>Associate Fellow (AFHEA)</h3>
+            <p>Awarded by Advance HE · April 2025</p>
+          </div>
+          <span class="timeline-tag">Recognition</span>
+        </li>
+        <li class="timeline-item" data-category="award" hidden="">
+          <span class="timeline-year">SEP 2024</span>
+          <div>
+            <h3>Best Poster Prize</h3>
+            <p>Annual PGR Conference, Department of Physics, University of Manchester · September 2024</p>
+          </div>
+          <span class="timeline-tag">Award</span>
+        </li>
+        <li class="timeline-item" data-category="award" hidden="">
+          <span class="timeline-year">JUN 2024</span>
+          <div>
+            <h3>Best Talk Prize</h3>
+            <p>Annual CDT Conference, Graphene NowNano CDT · June 2024</p>
+          </div>
+          <span class="timeline-tag">Award</span>
+        </li>
+        <li class="timeline-item" data-category="award" hidden="">
+          <span class="timeline-year">AUG 2020</span>
+          <div>
+            <h3>Hatfield-Heginbottom Scholarship</h3>
+            <p>Awarded to the best-performing third-year student, University of Manchester · August 2020</p>
+          </div>
+          <span class="timeline-tag">Award</span>
+        </li>
+        <li class="timeline-item" data-category="teaching" hidden="">
+          <span class="timeline-year">2021–2023</span>
+          <div>
+            <h3><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10101#course-unit-details" rel="noopener noreferrer" target="_blank">Dynamics</a></h3>
+            <p>First-year weekly workshops · September–December 2021, 2022 and 2023</p>
+          </div>
+          <span class="timeline-tag">Teaching</span>
+        </li>
+        <li class="timeline-item" data-category="teaching" hidden="">
+          <span class="timeline-year">2021–2023</span>
+          <div>
+            <h3><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10071#course-unit-details" rel="noopener noreferrer" target="_blank">Mathematics 1</a></h3>
+            <p>First-year weekly workshops · September–December 2021, 2022 and 2023</p>
+          </div>
+          <span class="timeline-tag">Teaching</span>
+        </li>
+        <li class="timeline-item" data-category="teaching" hidden="">
+          <span class="timeline-year">2022–2023</span>
+          <div>
+            <h3><a href="https://www.manchester.ac.uk/study/undergraduate/courses/2024/02021/mphys-physics/course-details/PHYS10180#course-unit-details" rel="noopener noreferrer" target="_blank">General Laboratory</a></h3>
+            <p>First-year laboratory teaching · 2022–2023</p>
+          </div>
+          <span class="timeline-tag">Teaching</span>
+        </li>
+      </ol>
     </div>
+    <a href="#projects" class="next-link shell">Next / Selected projects <span aria-hidden="true">↓</span></a>
+  </section>
 
-  </article>
+  <!-- 07 / PROJECTS · CONSULTING AND EARLIER RESEARCH -->
+  <section class="panel" id="projects" aria-labelledby="projects-title">
+    <div class="panel-content shell">
+      <header class="panel-head">
+        <div>
+          <div class="section-number">Selected projects/ Consulting &amp; research</div>
+          <h2 id="projects-title">Consulting &amp; <em>research projects</em></h2>
+        </div>
+        <p class="section-desc">Beyond my doctoral research, I've had the opportunity to explore a range of projects, from consulting and research commercialisation to interdisciplinary CDT projects and earlier undergraduate work.</p>
+      </header>
+      <!-- ========================================== CONSULTING & COMMERCIALISATION ========================================== -->
+      <h3 class="project-section-heading">Consulting &amp; Commercialisation</h3>
+      <p class="archive-intro">Alongside my academic work, I had the chance to take part in two substantial consulting projects, one with Cambridge EnterpriseTECH and another with the Manchester branch of 180 Degrees Consulting. As part of the Cambridge EnterpriseTECH programme, I also completed a ten-week course in research commercialisation at Cambridge Judge Business School, University of Cambridge. Together, these experiences gave me the opportunity to approach problems from a different perspective, explore how scientific ideas can be developed into real-world applications, and learn more about the commercial side of research.</p>
 
-</div>  
-<!-- ==========================================
-     EARLIER ACADEMIC PROJECTS
-========================================== -->
-<h3 class="project-section-heading">
-  Earlier Academic Projects
-</h3>
-
-<p class="archive-intro"> Below, you can find a selection of projects I worked on during my undergraduate studies and doctoral training through the CDT. These cover a range of topics, from hands-on laboratory work to theoretical studies, and I've included the reports for those interested in exploring the projects in more detail. </p>
-
-<h4 class="archive-subhead">
-  CDT Laboratory &amp; Enquiry-Based Learning Projects
-</h4>
-<div class="project-group"><details class="project-entry"><summary><span class="project-n">01</span><span class="project-title">Graphene/2D Materials Based Field-Effect Devices and Optoelectronics</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>CDT Laboratory Project 1: This work focused on the fabrication and characterisation of a graphene-silicon avalanche photodiode on a silicon-on-insulator substrate, using a circular geometry to minimise corner effects and improve device performance.</p><a href="assets/projects_pdfs/LAB1_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">02</span><span class="project-title">Low Temperature Electronic Measurements with Device Fabrication</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>CDT Laboratory Project 2: This work involved low-temperature electronic measurements of graphene-based devices, investigating the quantum Hall effect and proximity-induced superconductivity through magnetotransport measurements and the characterisation of a superconducting quantum interference device (SQUID).</p><a href="assets/projects_pdfs/LAB2_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">03</span><span class="project-title">Topological Properties of Electronic Bands in 2D Materials</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>CDT Enquiry-based Learning Project 1: This work addressed the role of topology and moiré patterns in condensed matter physics, with particular emphasis on the electronic properties of twisted graphene systems.</p><a href="assets/projects_pdfs/EBL1_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">04</span><span class="project-title">2D Optical Modulators</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>CDT Enquiry-based Learning Project 2: This work provided an overview of two-dimensional materials in electro-optical devices, focusing primarily on graphene-based plasmonic optical modulators, their underlying physical principles, experimental developments and potential technological applications.</p><a href="assets/projects_pdfs/EBL2_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details></div>
-<h4 class="archive-subhead"> Undergraduate Projects &amp; Essays </h4>
-<div class="project-group"><details class="project-entry"><summary><span class="project-n">01</span><span class="project-title">MPhys Project · Second Semester</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>Second-semester MPhys report: This work investigated how short-range electron interactions affect the anomalous Hall conductivity of two-dimensional massive Dirac fermions, and how such effects could depend on temperature and chemical potential.</p><a href="assets/projects_pdfs/MPhys%20-%20Second%20Semester.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">02</span><span class="project-title">MPhys Project · First Semester</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>First-semester MPhys report: This work was dedicated to studying and applying quantum field theory and diagrammatic perturbation methods in order to understand how electron interactions affect the anomalous Hall conductivity of massive Dirac fermions, while exploring the challenges involved in calculating interaction corrections.</p><a href="assets/projects_pdfs/MPhys%20-%20First%20Semester.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">03</span><span class="project-title">Numerical Solutions to the One-dimensional Schrödinger Equation</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>Second-year Theory Computing Project: This work involved implementing and comparing numerical methods for solving the one-dimensional Schrödinger equation, evaluating their accuracy and efficiency before applying them to quantum systems without simple analytical solutions.</p><a href="assets/projects_pdfs/Theory%20Computing%20Project.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">04</span><span class="project-title">The One-Dimensional Transverse Ising Model</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>Second-year vacation essay: This work aimed to study the one-dimensional quantum Ising model in a transverse magnetic field, using analytical methods to obtain its exact solution and investigate its energy spectrum and quantum phase transition.</p><a href="assets/projects_pdfs/Second%20Year%20Vacation%20Essay.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details>
-<details class="project-entry"><summary><span class="project-n">05</span><span class="project-title">Quantum Cryptography and the BB84 Protocol</span><span aria-hidden="true" class="project-plus">+</span></summary><div class="project-body"><p>First-year vacation essay: This essay provided an overview of the foundations of quantum cryptography, from its mathematical principles and the fundamentals of quantum mechanics and qubits to the development of secure communication protocols such as BB84.</p><a href="assets/projects_pdfs/First%20Year%20Vacation%20Essay.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a></div></details></div>
-
-</div><a href="#top" data-scroll-top class="next-link shell">Back to top <span aria-hidden="true">↑</span></a></section>
-
+      <!-- Consulting projects -->
+      <div class="consulting-projects">
+        <article class="consulting-entry">
+          <div class="consulting-heading">
+            <div class="consulting-heading-text">
+              <div class="consulting-number">01 / CONSULTING PROJECT</div>
+              <h4>Cambridge EnterpriseTECH</h4>
+              <div class="consulting-institution">Cohort 14 · Cambridge Judge Business School · Cambridge, UK</div>
+            </div>
+            <a class="consulting-logo" href="https://www.jbs.cam.ac.uk/entrepreneurship/programmes/enterprisetech/" target="_blank" rel="noopener noreferrer" aria-label="Visit Cambridge EnterpriseTECH"><img src="assets/logos/cambridge-enterprise-tech-logo.png" alt="Cambridge Judge Business School logo" loading="lazy" > <small class="consulting-logo-label"> EnterpriseTECH Programme <span aria-hidden="true">↗</span> </small></a>
+          </div>
+          <div class="consulting-text">
+            <p>As part of the EnterpriseTECH programme at Cambridge Judge Business School (Cohort 14), I worked in a multidisciplinary team on a project for Cambridge Surgical Models, an early-stage startup developing realistic artificial anatomical models for surgical training and medical education. Over the 10-week programme, we explored the commercial potential of their technology, surveying and interviewing a combined total of almost 200 medical students, doctors and medical educators, and researching the competitive landscape, potential customers and routes to market. We used this research to assess the product's commercial feasibility, estimate the UK market size and develop recommendations for the startup's business strategy. Our final deliverables included a detailed commercial feasibility report, a short promotional infomercial and a pitch deck, which we presented to a panel of judges. <!-- I particularly enjoyed working with people from different scientific and medical backgrounds and learning how to approach a research-driven technology from a business perspective, from understanding customer needs to building and pitching a commercial proposition. --></p>
+          </div>
+        </article>
+        <!-- 180 Degrees Consulting -->
+        <article class="consulting-entry">
+          <div class="consulting-heading">
+            <div class="consulting-heading-text">
+              <div class="consulting-number">02 / CONSULTING PROJECT</div>
+              <h4>180 Degrees Consulting</h4>
+              <div class="consulting-institution">University of Manchester Branch · Manchester, UK</div>
+            </div>
+            <a class="consulting-logo" href="https://180dc.org/branches/university-of-manchester" target="_blank" rel="noopener noreferrer" aria-label="Visit 180 Degrees Consulting"><img src="assets/logos/180-degrees-consulting-logo.png" alt="180 Degrees Consulting logo" loading="lazy" > <small class="consulting-logo-label"> 180DC Manchester Branch <span aria-hidden="true">↗</span> </small></a>
+          </div>
+          <div class="consulting-text">
+            <p>As part of 180 Degrees Consulting Manchester, I worked on a project for HippocratesAI, a startup developing AI-powered tools for healthcare and medical education. Our team surveyed around 50 medical students and healthcare professionals to better understand their experiences with AI, their needs and concerns, and what they would look for in such a product. We also researched competing technologies, compared different UK healthcare markets, and explored potential routes into the NHS, GP practices and universities. We brought all this together into a detailed report and presentation with recommendations on the company's market entry and growth strategy. <!-- I particularly enjoyed exploring the practical challenges of introducing AI into healthcare, where technological innovation has to be balanced with regulation, trust and the needs of medical professionals. --></p>
+          </div>
+        </article>
+      </div>
+      <!-- ========================================== EARLIER ACADEMIC PROJECTS ========================================== -->
+      <h3 class="project-section-heading">Earlier Academic Projects</h3>
+      <p class="archive-intro">Below, you can find a selection of projects I worked on during my undergraduate studies and doctoral training through the CDT. These cover a range of topics, from hands-on laboratory work to theoretical studies, and I've included the reports for those interested in exploring the projects in more detail.</p>
+      <h4 class="archive-subhead">CDT Laboratory &amp; Enquiry-Based Learning Projects</h4>
+      <div class="project-group">
+        <details class="project-entry">
+          <summary><span class="project-n">01</span><span class="project-title">Graphene/2D Materials Based Field-Effect Devices and Optoelectronics</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>CDT Laboratory Project 1: This work focused on the fabrication and characterisation of a graphene-silicon avalanche photodiode on a silicon-on-insulator substrate, using a circular geometry to minimise corner effects and improve device performance.</p>
+            <a href="assets/projects_pdfs/LAB1_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">02</span><span class="project-title">Low Temperature Electronic Measurements with Device Fabrication</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>CDT Laboratory Project 2: This work involved low-temperature electronic measurements of graphene-based devices, investigating the quantum Hall effect and proximity-induced superconductivity through magnetotransport measurements and the characterisation of a superconducting quantum interference device (SQUID).</p>
+            <a href="assets/projects_pdfs/LAB2_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">03</span><span class="project-title">Topological Properties of Electronic Bands in 2D Materials</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>CDT Enquiry-based Learning Project 1: This work addressed the role of topology and moiré patterns in condensed matter physics, with particular emphasis on the electronic properties of twisted graphene systems.</p>
+            <a href="assets/projects_pdfs/EBL1_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">04</span><span class="project-title">2D Optical Modulators</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>CDT Enquiry-based Learning Project 2: This work provided an overview of two-dimensional materials in electro-optical devices, focusing primarily on graphene-based plasmonic optical modulators, their underlying physical principles, experimental developments and potential technological applications.</p>
+            <a href="assets/projects_pdfs/EBL2_report.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+      </div>
+      <h4 class="archive-subhead">Undergraduate Projects &amp; Essays</h4>
+      <div class="project-group">
+        <details class="project-entry">
+          <summary><span class="project-n">01</span><span class="project-title">MPhys Project · Second Semester</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>Second-semester MPhys report: This work investigated how short-range electron interactions affect the anomalous Hall conductivity of two-dimensional massive Dirac fermions, and how such effects could depend on temperature and chemical potential.</p>
+            <a href="assets/projects_pdfs/MPhys%20-%20Second%20Semester.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">02</span><span class="project-title">MPhys Project · First Semester</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>First-semester MPhys report: This work was dedicated to studying and applying quantum field theory and diagrammatic perturbation methods in order to understand how electron interactions affect the anomalous Hall conductivity of massive Dirac fermions, while exploring the challenges involved in calculating interaction corrections.</p>
+            <a href="assets/projects_pdfs/MPhys%20-%20First%20Semester.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">03</span><span class="project-title">Numerical Solutions to the One-dimensional Schrödinger Equation</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>Second-year Theory Computing Project: This work involved implementing and comparing numerical methods for solving the one-dimensional Schrödinger equation, evaluating their accuracy and efficiency before applying them to quantum systems without simple analytical solutions.</p>
+            <a href="assets/projects_pdfs/Theory%20Computing%20Project.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">04</span><span class="project-title">The One-Dimensional Transverse Ising Model</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>Second-year vacation essay: This work aimed to study the one-dimensional quantum Ising model in a transverse magnetic field, using analytical methods to obtain its exact solution and investigate its energy spectrum and quantum phase transition.</p>
+            <a href="assets/projects_pdfs/Second%20Year%20Vacation%20Essay.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+        <details class="project-entry">
+          <summary><span class="project-n">05</span><span class="project-title">Quantum Cryptography and the BB84 Protocol</span><span aria-hidden="true" class="project-plus">+</span></summary>
+          <div class="project-body">
+            <p>First-year vacation essay: This essay provided an overview of the foundations of quantum cryptography, from its mathematical principles and the fundamentals of quantum mechanics and qubits to the development of secure communication protocols such as BB84.</p>
+            <a href="assets/projects_pdfs/First%20Year%20Vacation%20Essay.pdf" class="thesis-action project-report" rel="noopener noreferrer" target="_blank">OPEN REPORT <span aria-hidden="true">↗</span></a>
+          </div>
+        </details>
+      </div>
+    </div>
+    <a href="#top" data-scroll-top class="next-link shell">Back to top <span aria-hidden="true">↑</span></a>
+  </section>
 </main>
-<footer class="site-footer"><span>© <span id="current-year"></span> A. DARIA DUMITRIU-I.</span><span>Quantum Computing · Computational Physics · Applied R &amp; D</span><a href="#top" data-scroll-top>Back to top ↑</a></footer>
+
+    <!-- ========================================
+         FOOTER
+    ========================================= -->
+    <footer class="site-footer">
+        <span>
+            © <span id="current-year"></span> A. DARIA DUMITRIU-I.
+        </span>
+
+        <span>
+            Quantum Computing · Computational Physics · Applied R &amp; D
+        </span>
+
+        <a href="#top" data-scroll-top>
+            Back to top ↑
+        </a>
+    </footer>
+
+    <!-- ========================================
+         JAVASCRIPT
+    ========================================= -->
+    <script type="module" src="./main.js"></script>
+
+</body>
+</html>
 <script type="module" src="./main.js"></script>
+<!-- ========================================
+     WEBSITE INTERACTIONS
+     Separate from the Three.js renderer in main.js
+========================================= -->
 <script>
-/* ==========================================
-   GRAPHENE FALLBACK
-========================================== */
+
+/* ============================================================
+   01. GRAPHENE LOADING STATUS
+   ============================================================ */
+
+// The separate Three.js module handles the interactive artwork.
+// If it has not updated its initial status after six seconds,
+// update the hidden status labels.
 
 window.setTimeout(() => {
     const status = document.getElementById('load-status');
@@ -1007,15 +2492,16 @@ window.setTimeout(() => {
 }, 6000);
 
 
-/* ==========================================
-   NAVIGATION MENU
-========================================== */
+/* ============================================================
+   02. NAVIGATION MENU
+   ============================================================ */
 
 const menuButton = document.getElementById('menu-button');
 const nav = document.getElementById('section-nav');
 
 if (menuButton && nav) {
 
+    // Open or close the navigation menu.
     menuButton.addEventListener('click', () => {
         const open =
             menuButton.getAttribute('aria-expanded') === 'true';
@@ -1024,6 +2510,7 @@ if (menuButton && nav) {
         nav.hidden = open;
     });
 
+    // Close the menu after selecting a section.
     nav.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             nav.hidden = true;
@@ -1031,19 +2518,19 @@ if (menuButton && nav) {
         });
     });
 
+    // Close the menu when clicking outside the header controls.
     document.addEventListener('click', event => {
         if (!nav.hidden && !event.target.closest('.mast-right')) {
             nav.hidden = true;
             menuButton.setAttribute('aria-expanded', 'false');
         }
     });
-
 }
 
 
-/* ==========================================
-   EXPERIENCE FILTERS
-========================================== */
+/* ============================================================
+   03. EXPERIENCE FILTERS
+   ============================================================ */
 
 const filterLabels = {
     conference: 'CONFERENCES & SCHOOLS',
@@ -1051,10 +2538,11 @@ const filterLabels = {
     award: 'AWARDS'
 };
 
+// Display the selected category and update the entry counter.
+
 document.querySelectorAll('[data-filter]').forEach(button => {
 
     button.addEventListener('click', () => {
-
         const selected = button.dataset.filter;
 
         document.querySelectorAll('[data-filter]').forEach(b => {
@@ -1077,20 +2565,19 @@ document.querySelectorAll('[data-filter]').forEach(button => {
             counter.textContent =
                 `${count} ENTRIES · ${filterLabels[selected]}`;
         }
-
     });
-
 });
 
 
-/* ==========================================
-   BACK TO TOP
-========================================== */
+/* ============================================================
+   04. BACK-TO-TOP LINKS
+   ============================================================ */
+
+// Scroll smoothly unless the visitor prefers reduced motion.
 
 document.querySelectorAll('[data-scroll-top]').forEach(link => {
 
     link.addEventListener('click', event => {
-
         event.preventDefault();
 
         const reduced = window.matchMedia(
@@ -1101,15 +2588,20 @@ document.querySelectorAll('[data-scroll-top]').forEach(link => {
             top: 0,
             behavior: reduced ? 'auto' : 'smooth'
         });
-
     });
-
 });
 
 
-/* ==========================================
-   GALLERY IMAGES
-========================================== */
+/* ============================================================
+   05. GALLERY IMAGE LISTS
+   ============================================================ */
+
+// Optional hobby photographs and the seven thesis figures.
+//
+// The gallery loader checks whether each file exists.
+// A gallery remains hidden if none of its images can be loaded.
+//
+// Update the hobby captions here when photographs are added.
 
 const galleryPhotos = {
 
@@ -1133,21 +2625,41 @@ const galleryPhotos = {
     ],
 
     thesis: [
-        { src: 'assets/thesis_pngs/thesis-01.png', caption: 'Figure 1: Comparison of particle and heat transport.' },
-        { src: 'assets/thesis_pngs/thesis-02.png', caption: 'Figure 2: Thermal equilibrium conditions in flat and curved space.' },
-        { src: 'assets/thesis_pngs/thesis-03.png', caption: 'Figure 3: Locality assumption underlying the temperature-gravity mapping.' },
-        { src: 'assets/thesis_pngs/thesis-04.png', caption: 'Figure 4: Analogy between geometric topology and band structure topology.' },
-        { src: 'assets/thesis_pngs/thesis-05.png', caption: 'Figure 5: Construction of the toroidal topology of the 2D Brillouin.' },
-        { src: 'assets/thesis_pngs/thesis-06.png', caption: 'Figure 6: Haldane model and massive Dirac fermions.' },
-        { src: 'assets/thesis_pngs/thesis-07.png', caption: 'Figure 7: Comparison between a trivial and a topological insulator.' }
+        {
+            src: 'assets/thesis_pngs/thesis-01.png',
+            caption: 'Figure 1: Comparison of particle and heat transport.'
+        },
+        {
+            src: 'assets/thesis_pngs/thesis-02.png',
+            caption: 'Figure 2: Thermal equilibrium conditions in flat and curved space.'
+        },
+        {
+            src: 'assets/thesis_pngs/thesis-03.png',
+            caption: 'Figure 3: Locality assumption underlying the temperature-gravity mapping.'
+        },
+        {
+            src: 'assets/thesis_pngs/thesis-04.png',
+            caption: 'Figure 4: Analogy between geometric topology and band structure topology.'
+        },
+        {
+            src: 'assets/thesis_pngs/thesis-05.png',
+            caption: 'Figure 5: Construction of the toroidal topology of the 2D Brillouin.'
+        },
+        {
+            src: 'assets/thesis_pngs/thesis-06.png',
+            caption: 'Figure 6: Haldane model and massive Dirac fermions.'
+        },
+        {
+            src: 'assets/thesis_pngs/thesis-07.png',
+            caption: 'Figure 7: Comparison between a trivial and a topological insulator.'
+        }
     ]
-
 };
 
 
-/* ==========================================
-   IMAGE GALLERIES
-========================================== */
+/* ============================================================
+   06. IMAGE GALLERIES AND THESIS CAROUSEL
+   ============================================================ */
 
 const galleryReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
@@ -1157,19 +2669,18 @@ document.querySelectorAll('[data-gallery]').forEach(async gallery => {
 
     const galleryName = gallery.dataset.gallery;
     const isThesis = galleryName === 'thesis';
-
     const proposed = galleryPhotos[galleryName] || [];
 
-    // Hide the gallery until its images have loaded.
+    // --------------------------------------------------------
+    // 06.1. LOAD AVAILABLE IMAGES
+    // --------------------------------------------------------
+
+    // Check the image files before displaying the gallery.
+    // Missing images are excluded automatically.
+
     gallery.hidden = true;
 
-
-    /* --------------------------------------
-       LOAD AVAILABLE IMAGES
-    -------------------------------------- */
-
     const found = await Promise.all(
-
         proposed.map(item => new Promise(resolve => {
 
             const probe = new Image();
@@ -1182,31 +2693,26 @@ document.querySelectorAll('[data-gallery]').forEach(async gallery => {
             };
 
             probe.src = item.src;
-
         }))
-
     );
 
     const slides = found.filter(Boolean);
 
-    // Leave the gallery hidden if there are no images.
     if (!slides.length) {
         return;
     }
 
-
-    /* --------------------------------------
-       GALLERY ELEMENTS
-    -------------------------------------- */
+    // --------------------------------------------------------
+    // 06.2. GALLERY ELEMENTS
+    // --------------------------------------------------------
 
     const photo = gallery.querySelector('[data-gallery-image]');
     const caption = gallery.querySelector('[data-gallery-caption]');
     const progress = gallery.querySelector('[data-gallery-progress]');
-
     const prev = gallery.querySelector('[data-gallery-prev]');
     const next = gallery.querySelector('[data-gallery-next]');
 
-    // The fixed-size image frame is used by the thesis gallery.
+    // Only the thesis carousel uses a dedicated image stage.
     const stage = gallery.querySelector('.thesis-image-stage');
 
     if (!photo || !caption || !progress || !prev || !next) {
@@ -1214,26 +2720,22 @@ document.querySelectorAll('[data-gallery]').forEach(async gallery => {
         return;
     }
 
+    // --------------------------------------------------------
+    // 06.3. SETTINGS AND STATE
+    // --------------------------------------------------------
 
-    /* --------------------------------------
-       SETTINGS
-    -------------------------------------- */
-
-    const slideDuration = 5000;       // 5 seconds between slides
-    const transitionDuration = 800;    // 0.8-second sliding animation
+    const slideDuration = 5000;       // Time between automatic slides.
+    const transitionDuration = 800;   // Duration of sliding animation.
 
     let slideIndex = 0;
     let animating = false;
-
     let autoTimer = null;
-
     let galleryVisible = false;
     let pointerInside = false;
 
-
-    /* --------------------------------------
-       DISPLAY CURRENT IMAGE
-    -------------------------------------- */
+    // --------------------------------------------------------
+    // 06.4. DISPLAY THE CURRENT IMAGE
+    // --------------------------------------------------------
 
     function show() {
 
@@ -1253,181 +2755,145 @@ document.querySelectorAll('[data-gallery]').forEach(async gallery => {
 
         prev.disabled = slides.length < 2;
         next.disabled = slides.length < 2;
-
     }
 
-/* ==========================================
-   HORIZONTAL CAROUSEL ANIMATION
-========================================== */
+    // --------------------------------------------------------
+    // 06.5. CHANGE SLIDE
+    // --------------------------------------------------------
 
-function changeSlide(direction) {
-
-    // Prevent overlapping animations.
-
-    if (animating || slides.length < 2) {
-        return;
-    }
-
-    const targetIndex =
-        (slideIndex + direction + slides.length) % slides.length;
-
-
-    // Keep the original behaviour for the hobbies gallery
-    // and for visitors who prefer reduced motion.
-
-    if (
-        !isThesis ||
-        galleryReducedMotion.matches ||
-        !stage ||
-        typeof photo.animate !== 'function'
-    ) {
-        slideIndex = targetIndex;
-        show();
-        return;
-    }
-
-
-    animating = true;
-
-
-    /* --------------------------------------
-       CREATE TWO IMAGES
-    -------------------------------------- */
-
-    // Current figure
-
-    const outgoing = photo.cloneNode(false);
-
-    outgoing.removeAttribute('data-gallery-image');
-    outgoing.removeAttribute('id');
-
-
-    // Next figure
-
-    const incoming = document.createElement('img');
-
-    incoming.src = slides[targetIndex].src;
-
-    incoming.alt = slides[targetIndex].caption;
-
-
-    /* --------------------------------------
-       CREATE SLIDING TRACK
-    -------------------------------------- */
-
-    const track = document.createElement('div');
-
-    track.className = 'thesis-slide-track';
-
-
-    // Forward:
-    // [NEW FIGURE] [CURRENT FIGURE]
+    // The hobby gallery switches images directly.
+    // The thesis gallery uses a horizontal sliding animation.
     //
-    // Reverse:
-    // [CURRENT FIGURE] [NEW FIGURE]
+    // If reduced motion is requested or animation is unavailable,
+    // the thesis gallery also switches images directly.
 
-    if (direction > 0) {
+    function changeSlide(direction) {
 
-        track.appendChild(outgoing);
-        track.appendChild(incoming);
-
-    } else {
-
-        track.appendChild(incoming);
-        track.appendChild(outgoing);
-
-    }
-
-
-    /* --------------------------------------
-       INITIAL POSITION
-    -------------------------------------- */
-
-    // The track is twice as wide as the image frame.
-    // Moving it by 50% shifts it by exactly one figure.
-
-    const startPosition =
-        direction > 0 ? '0%' : '-50%';
-
-    const endPosition =
-        direction > 0 ? '-50%' : '0%';
-
-
-    // Put the track inside the frame.
-
-    track.style.transform =
-        `translateX(${startPosition})`;
-
-    stage.appendChild(track);
-
-
-    // Hide the original image while the two-image
-    // track performs the animation.
-
-    photo.style.visibility = 'hidden';
-
-
-    /* --------------------------------------
-       ANIMATE THE ENTIRE TRACK
-    -------------------------------------- */
-
-    const animation = track.animate(
-
-        [
-            {
-                transform: `translateX(${startPosition})`
-            },
-            {
-                transform: `translateX(${endPosition})`
-            }
-        ],
-
-        {
-            duration: transitionDuration,
-            easing: 'cubic-bezier(0.22, 0.7, 0.25, 1)',
-            fill: 'forwards'
+        // Prevent overlapping animations.
+        if (animating || slides.length < 2) {
+            return;
         }
 
-    );
+        const targetIndex =
+            (slideIndex + direction + slides.length) % slides.length;
 
+        if (
+            !isThesis ||
+            galleryReducedMotion.matches ||
+            !stage ||
+            typeof photo.animate !== 'function'
+        ) {
+            slideIndex = targetIndex;
+            show();
+            return;
+        }
 
-    /* --------------------------------------
-       COMPLETE THE TRANSITION
-    -------------------------------------- */
+        animating = true;
 
-    const finishTransition = () => {
+        // ----------------------------------------------------
+        // CREATE THE TEMPORARY SLIDING TRACK
+        // ----------------------------------------------------
 
-        // Update the permanent image and caption.
+        // Clone the currently displayed figure.
+        const outgoing = photo.cloneNode(false);
 
-        slideIndex = targetIndex;
+        outgoing.removeAttribute('data-gallery-image');
+        outgoing.removeAttribute('id');
 
-        show();
+        // Create the incoming figure.
+        const incoming = document.createElement('img');
 
+        incoming.src = slides[targetIndex].src;
+        incoming.alt = slides[targetIndex].caption;
 
-        // Reveal the permanent image.
+        // The track contains both figures.
+        const track = document.createElement('div');
 
-        photo.style.visibility = '';
+        track.className = 'thesis-slide-track';
 
+        if (direction > 0) {
+            track.appendChild(outgoing);
+            track.appendChild(incoming);
+        } else {
+            track.appendChild(incoming);
+            track.appendChild(outgoing);
+        }
 
-        // Remove the temporary sliding track.
+        // ----------------------------------------------------
+        // POSITION THE TRACK
+        // ----------------------------------------------------
 
-        track.remove();
+        // The track is twice the width of the image stage.
+        // A 50% translation moves by exactly one figure.
 
-        animating = false;
+        const startPosition =
+            direction > 0 ? '0%' : '-50%';
 
-    };
+        const endPosition =
+            direction > 0 ? '-50%' : '0%';
 
+        track.style.transform = `translateX(${startPosition})`;
 
-    animation.finished.then(
-        finishTransition,
-        finishTransition
-    );
+        stage.appendChild(track);
 
-}
+        // Hide the permanent image during the transition.
+        photo.style.visibility = 'hidden';
 
-    /* --------------------------------------
-       AUTOMATIC PLAYBACK
-    -------------------------------------- */
+        // ----------------------------------------------------
+        // ANIMATE THE TRACK
+        // ----------------------------------------------------
+
+        const animation = track.animate(
+            [
+                {
+                    transform: `translateX(${startPosition})`
+                },
+                {
+                    transform: `translateX(${endPosition})`
+                }
+            ],
+            {
+                duration: transitionDuration,
+                easing: 'cubic-bezier(0.22, 0.7, 0.25, 1)',
+                fill: 'forwards'
+            }
+        );
+
+        // ----------------------------------------------------
+        // COMPLETE THE TRANSITION
+        // ----------------------------------------------------
+
+        // Update the permanent figure, remove the temporary
+        // track and allow the next animation.
+
+        const finishTransition = () => {
+            slideIndex = targetIndex;
+            show();
+
+            photo.style.visibility = '';
+            track.remove();
+
+            animating = false;
+        };
+
+        // Perform cleanup even if the animation rejects.
+        animation.finished.then(
+            finishTransition,
+            finishTransition
+        );
+    }
+
+    // --------------------------------------------------------
+    // 06.6. AUTOMATIC PLAYBACK
+    // --------------------------------------------------------
+
+    // Automatic playback applies only to the thesis gallery.
+    //
+    // It pauses when:
+    // - The gallery is outside the viewport.
+    // - The mouse is over the gallery.
+    // - The browser tab is hidden.
+    // - Reduced motion is requested.
 
     function stopAuto() {
 
@@ -1435,13 +2901,11 @@ function changeSlide(direction) {
             clearTimeout(autoTimer);
             autoTimer = null;
         }
-
     }
-
 
     function startAuto() {
 
-        // Clear any previous timer before scheduling a new one.
+        // Avoid multiple simultaneous timers.
         stopAuto();
 
         if (
@@ -1456,115 +2920,86 @@ function changeSlide(direction) {
         }
 
         autoTimer = setTimeout(() => {
-
             autoTimer = null;
 
             changeSlide(1);
 
-            // Schedule the following automatic transition.
+            // Schedule the next automatic transition.
             startAuto();
-
         }, slideDuration);
-
     }
 
-
-    /* --------------------------------------
-       MANUAL NAVIGATION
-    -------------------------------------- */
+    // --------------------------------------------------------
+    // 06.7. MANUAL NAVIGATION
+    // --------------------------------------------------------
 
     prev.addEventListener('click', () => {
-
         changeSlide(-1);
 
         // Restart the countdown after manual navigation.
         startAuto();
-
     });
-
 
     next.addEventListener('click', () => {
-
         changeSlide(1);
-
         startAuto();
-
     });
 
-
-    /* --------------------------------------
-       INITIALISE GALLERY
-    -------------------------------------- */
+    // --------------------------------------------------------
+    // 06.8. INITIALISE THE GALLERY
+    // --------------------------------------------------------
 
     gallery.hidden = false;
-
     show();
 
-
-    /* --------------------------------------
-       THESIS AUTOMATIC PLAYBACK
-    -------------------------------------- */
+    // --------------------------------------------------------
+    // 06.9. THESIS PLAYBACK EVENT LISTENERS
+    // --------------------------------------------------------
 
     if (isThesis) {
 
-        // Only advance while the gallery is on screen.
-
+        // Only play automatically when the gallery is visible.
         const observer = new IntersectionObserver(entries => {
-
             galleryVisible = entries[0].isIntersecting;
-
             startAuto();
-
         }, {
             threshold: 0.2
         });
 
         observer.observe(gallery);
 
-
         // Pause when the mouse enters the gallery.
-
         gallery.addEventListener('mouseenter', () => {
-
             pointerInside = true;
             stopAuto();
-
         });
-
 
         // Resume when the mouse leaves.
-
         gallery.addEventListener('mouseleave', () => {
-
             pointerInside = false;
             startAuto();
-
         });
 
-
-        // Pause when the browser tab is hidden.
-
+        // Pause automatic playback in background tabs.
         document.addEventListener(
             'visibilitychange',
             startAuto
         );
 
-
-        // Respect reduced-motion preferences.
-
+        // Respect changes to reduced-motion preferences.
         galleryReducedMotion.addEventListener(
             'change',
             startAuto
         );
-
     }
-
 });
 
 
-/* ==========================================
-   FOOTER YEAR
-========================================== */
+/* ============================================================
+   07. FOOTER YEAR
+   ============================================================ */
+
+// Keep the copyright year up to date automatically.
 
 const yearElement = document.getElementById('current-year');
 
@@ -1573,9 +3008,9 @@ if (yearElement) {
 }
 
 
-/* ==========================================
-   PORTRAIT: IMAGE LOADING
-========================================== */
+/* ============================================================
+   08. PORTRAIT LOADING AND SCROLL MOVEMENT
+   ============================================================ */
 
 const portrait = document.getElementById('portrait-image');
 const portraitFrame = document.getElementById('about-portrait');
@@ -1588,10 +3023,14 @@ const portraitReducedMotion = window.matchMedia(
 
 let portraitScrollFrame = null;
 
+// ------------------------------------------------------------
+// 08.1. CALCULATE PORTRAIT POSITION
+// ------------------------------------------------------------
 
-/* ==========================================
-   PORTRAIT: SCROLL-LINKED MOVEMENT
-========================================== */
+// The portrait begins 200px below its resting position.
+// As the About section enters the viewport, it moves upwards.
+//
+// Movement is controlled by the CSS property --portrait-offset.
 
 function updatePortraitPosition() {
 
@@ -1605,7 +3044,6 @@ function updatePortraitPosition() {
     }
 
     // Disable movement when reduced motion is requested.
-
     if (portraitReducedMotion.matches) {
         portrait.style.setProperty('--portrait-offset', '0px');
         return;
@@ -1613,7 +3051,8 @@ function updatePortraitPosition() {
 
     const rect = aboutSection.getBoundingClientRect();
 
-    // Calculate how far the section has entered the viewport.
+    // The movement completes as the section enters the first
+    // 75% of the viewport height.
 
     const progress = Math.max(
         0,
@@ -1623,23 +3062,20 @@ function updatePortraitPosition() {
         )
     );
 
-    // Portrait moves upward by a maximum of 90 pixels.
-
     const movement = 200;
-
     const offset = (1 - progress) * movement;
 
     portrait.style.setProperty(
         '--portrait-offset',
         `${offset}px`
     );
-
 }
 
+// ------------------------------------------------------------
+// 08.2. EFFICIENT SCROLL UPDATES
+// ------------------------------------------------------------
 
-/* ------------------------------------------
-   EFFICIENT SCROLL UPDATES
------------------------------------------- */
+// Schedule at most one portrait update per animation frame.
 
 function requestPortraitMovement() {
 
@@ -1648,51 +3084,40 @@ function requestPortraitMovement() {
     }
 
     portraitScrollFrame = requestAnimationFrame(() => {
-
         portraitScrollFrame = null;
-
         updatePortraitPosition();
-
     });
-
 }
 
+// ------------------------------------------------------------
+// 08.3. REVEAL THE PORTRAIT WHEN LOADED
+// ------------------------------------------------------------
 
-/* ------------------------------------------
-   REVEAL PORTRAIT WHEN IMAGE LOADS
------------------------------------------- */
+// The portrait starts hidden to avoid showing a broken image.
+// Once loaded, the two-column About layout is enabled.
 
 function showPortrait() {
 
-    if (
-        !portrait ||
-        !portraitFrame ||
-        !aboutLayout
-    ) {
+    if (!portrait || !portraitFrame || !aboutLayout) {
         return;
     }
 
     if (portrait.naturalWidth > 0) {
-
         portraitFrame.hidden = false;
-
         aboutLayout.classList.remove('no-portrait');
-
         requestPortraitMovement();
-
     }
-
 }
 
-
-/* ------------------------------------------
-   PORTRAIT EVENT LISTENERS
------------------------------------------- */
+// ------------------------------------------------------------
+// 08.4. PORTRAIT EVENT LISTENERS
+// ------------------------------------------------------------
 
 if (portrait && portraitFrame && aboutSection) {
 
     portrait.addEventListener('load', showPortrait);
 
+    // Handle images already loaded from the browser cache.
     if (portrait.complete) {
         showPortrait();
     }
@@ -1714,20 +3139,21 @@ if (portrait && portraitFrame && aboutSection) {
     );
 
     requestPortraitMovement();
-
 }
 
 
-/* ==========================================
-   UNIVERSITY LOGOS
-========================================== */
+/* ============================================================
+   09. UNIVERSITY LOGO FALLBACKS
+   ============================================================ */
+
+// Institution cards display a text placeholder until their
+// corresponding logo image has loaded successfully.
 
 document.querySelectorAll('[data-logo-img]').forEach(img => {
 
     function showLogo() {
 
         if (img.naturalWidth > 0) {
-
             img.hidden = false;
 
             const placeholder = img.previousElementSibling;
@@ -1735,25 +3161,31 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
             if (placeholder) {
                 placeholder.hidden = true;
             }
-
         }
-
     }
 
     img.addEventListener('load', showLogo);
 
+    // Handle logos already loaded from the browser cache.
     if (img.complete) {
         showLogo();
     }
-
 });
 
-</script>
 
-<script>
-/* ========================================
-   ABOUT ME - INTERACTIVE GLOW TRAIL
-   ======================================== */
+/* ============================================================
+   10. ABOUT ME INTERACTIVE GLOW TRAIL
+   ============================================================ */
+
+// The glow is activated by hovering over the portrait.
+//
+// After activation, the mouse leaves subtle fading trails
+// anywhere within the About section.
+//
+// Moving outside the About section deactivates the effect.
+// The existing glow stamps continue fading naturally.
+//
+// The effect is disabled for touch devices and reduced motion.
 
 (() => {
 
@@ -1761,7 +3193,9 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
     const image = document.querySelector('#portrait-image');
     const glowLayer = document.querySelector('#about .about-glow-layer');
 
-    if (!about || !image || !glowLayer) return;
+    if (!about || !image || !glowLayer) {
+        return;
+    }
 
     const allowGlow = window.matchMedia(
         '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
@@ -1772,10 +3206,19 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
     let lastY = null;
     let lastTime = 0;
 
+    // --------------------------------------------------------
+    // 10.1. CREATE A GLOW STAMP
+    // --------------------------------------------------------
+
     function createGlow(event) {
 
-        if (!glowActive || !allowGlow.matches) return;
-        if (event.pointerType !== 'mouse') return;
+        if (!glowActive || !allowGlow.matches) {
+            return;
+        }
+
+        if (event.pointerType !== 'mouse') {
+            return;
+        }
 
         const rect = glowLayer.getBoundingClientRect();
 
@@ -1787,6 +3230,9 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
         const distance = lastX === null
             ? Infinity
             : Math.hypot(x - lastX, y - lastY);
+
+        // Avoid producing near-identical stamps during rapid
+        // mouse movement.
 
         if (distance < 12 && now - lastTime < 40) {
             return;
@@ -1800,12 +3246,12 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
 
         glowLayer.appendChild(glow);
 
+        // Remove each stamp after its fade-out animation.
         glow.addEventListener('animationend', () => {
             glow.remove();
         }, { once: true });
 
-        // Prevent too many glowing elements accumulating.
-
+        // Prevent too many elements accumulating in the DOM.
         const stamps = glowLayer.querySelectorAll('.about-glow-stamp');
 
         if (stamps.length > 25) {
@@ -1817,11 +3263,15 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
         lastTime = now;
     }
 
-    // 1. Hovering over the portrait activates the glow.
+    // --------------------------------------------------------
+    // 10.2. ACTIVATE THE GLOW OVER THE PORTRAIT
+    // --------------------------------------------------------
 
     image.addEventListener('pointerenter', event => {
 
-        if (event.pointerType !== 'mouse') return;
+        if (event.pointerType !== 'mouse') {
+            return;
+        }
 
         glowActive = true;
 
@@ -1829,32 +3279,28 @@ document.querySelectorAll('[data-logo-img]').forEach(img => {
         lastY = null;
 
         createGlow(event);
-
     });
 
-    // 2. The glow can now follow the mouse
-    // anywhere within the About Me section.
+    // --------------------------------------------------------
+    // 10.3. FOLLOW THE MOUSE THROUGH THE ABOUT SECTION
+    // --------------------------------------------------------
 
     about.addEventListener('pointermove', event => {
-
-        if (!glowActive) return;
-
         createGlow(event);
-
     });
 
-    // 3. Leaving the About Me section stops
-    // creating new glows.
+    // --------------------------------------------------------
+    // 10.4. DEACTIVATE WHEN LEAVING THE ABOUT SECTION
+    // --------------------------------------------------------
 
     about.addEventListener('pointerleave', () => {
-
         glowActive = false;
-
         lastX = null;
         lastY = null;
-
     });
 
 })();
+
 </script>
-</body></html>
+</body>
+</html>
