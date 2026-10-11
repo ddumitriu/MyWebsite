@@ -210,7 +210,7 @@ function resize() {
   const height = Math.max(1, art.clientHeight);
   renderer.setSize(width, height, false);
   const aspect = width / height;
-  const halfHeight = 3.2;
+  const halfHeight = 3.7;
   camera.left = -halfHeight * aspect;
   camera.right = halfHeight * aspect;
   camera.top = halfHeight;
