@@ -544,6 +544,24 @@ h1 em {
     position: relative;
     overflow: hidden;
     isolation: isolate;
+
+    /* Position the portrait slightly below the biography */
+    margin-top: 50px;
+
+    /* Gradually fade the bottom of the portrait into the page */
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 82%,
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        to bottom,
+        black 0%,
+        black 82%,
+        transparent 100%
+    );
 }
 
 #about-portrait img {
@@ -1933,7 +1951,7 @@ dialog::backdrop {
     <div class="social-links" aria-label="Profiles">
       <a href="https://www.linkedin.com/in/alexandra-daria-dumitriu-iovanescu/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.48 2.48 0 1 0 0 4.96 2.48 2.48 0 0 0 0-4.96ZM3 9h4v12H3V9Zm6 0h3.85v1.64h.06c.54-.96 1.85-1.97 3.81-1.97 4.07 0 4.82 2.68 4.82 6.16V21h-4v-5.47c0-1.3-.02-2.98-1.81-2.98-1.82 0-2.1 1.42-2.1 2.88V21H9V9Z"/></svg></a>
       <a href="https://github.com/ddumitriu" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5a10.5 10.5 0 0 0-3.32 20.46c.52.1.72-.23.72-.5v-1.8c-2.95.65-3.57-1.25-3.57-1.25-.48-1.2-1.17-1.52-1.17-1.52-.96-.66.07-.64.07-.64 1.07.07 1.63 1.1 1.63 1.1.94 1.6 2.47 1.14 3.07.87.1-.68.36-1.14.65-1.4-2.35-.27-4.82-1.17-4.82-5.18 0-1.14.41-2.08 1.08-2.81-.11-.27-.47-1.33.1-2.77 0 0 .88-.28 2.89 1.07A10 10 0 0 1 12 7.9c.89 0 1.78.12 2.62.35 2-1.35 2.88-1.07 2.88-1.07.58 1.44.22 2.5.11 2.77.67.73 1.07 1.67 1.07 2.81 0 4.02-2.48 4.91-4.84 5.18.38.33.72.98.72 1.97v1.55c0 .27.19.61.73.5A10.5 10.5 0 0 0 12 1.5Z"/></svg></a>
-      <a href="https://orcid.org/my-orcid?orcid=0000-0002-6673-2410" target="_blank" rel="noopener noreferrer" aria-label="ORCID" title="ORCID"><span aria-hidden="true">iD</span></a>
+      <a href="https://orcid.org/0000-0002-6673-2410" target="_blank" rel="noopener noreferrer" aria-label="ORCID" title="ORCID"><span aria-hidden="true">iD</span></a>
     </div>
     <button class="menu-button" id="menu-button" type="button" aria-expanded="false" aria-controls="section-nav">Sections <span class="menu-caret" aria-hidden="true">▾</span></button>
     <nav class="site-nav" id="section-nav" aria-label="Site sections" hidden>
@@ -1955,7 +1973,7 @@ dialog::backdrop {
         <p class="eyebrow">Quantum science &amp; computational research</p>
         <h1 id="hero-heading">Theoretical Physicist <span aria-hidden="true">&amp;</span><br><em> Quantum Researcher</em></h1>
         <div class="specialities">Quantum Computing </span>·<span aria-hidden="true"> Computational Physics</span> <span aria-hidden="true">·</span> Applied R &amp; D</div>
-        <p class="intro">I'm a theoretical physicist working at the intersection of quantum computing and applied research, with my current research focusing on quantum algorithms for applications in computer-aided engineering and computational fluid dynamics. My background is in theoretical condensed matter physics, in which I completed my PhD, and it has shaped the way I approach complex scientific problems, combining physical intuition, mathematical reasoning and computational methods.</p>
+        <p class="intro">I'm a theoretical physicist working at the intersection of quantum computing and applied sciences, with my current research focusing on quantum algorithms for applications in computer-aided engineering and computational fluid dynamics. My background is in theoretical condensed matter physics, in which I completed my PhD, and it has shaped the way I approach complex scientific problems, combining physical intuition, mathematical reasoning and computational methods.</p>
         <a class="hero-down" href="#about">Find out more below <span aria-hidden="true">↓</span></a>
       </div>
       <div class="art" id="graphene-art" aria-label="Interactive curved hexagonal lattice. Move your pointer or tap to deform the surface.">
@@ -1987,7 +2005,7 @@ dialog::backdrop {
           <img src="assets/portrait/portrait.png" alt="My PhD graduation picture" id="portrait-image">
         </div>
         <div class="about-copy">
-          <p>My passion for science started early on. Even at school, I could never quite get enough of maths and physics, which led me to take part in academic Olympiads and eventually pursue my studies in the UK. I've always enjoyed the challenge of understanding how things work and finding solutions to difficult problems, a curiosity that ultimately led me to a PhD in theoretical condensed matter physics at the University of Manchester.</p>
+          <p>My passion for science started early on. Even at school, I could never quite get enough of maths and physics, which led me to participate in academic Olympiads and eventually pursue my studies in the UK. I've always enjoyed the challenge of understanding how things work and finding solutions to difficult problems, a curiosity that ultimately led me to a PhD in theoretical condensed matter physics at the University of Manchester.</p>
           <p>Alongside my academic research, I also became involved in consulting projects, which introduced me to a different side of problem-solving. I began to appreciate not just the science behind an idea, but also its practical applications and the challenges of bringing it into the real world. These experiences gradually shaped my decision to move into industry, where I could combine my scientific background with a more applied approach.</p>
           <p>In a way, my journey has brought me back to where I started. Quantum computing was one of my earliest research interests, dating back to my first undergraduate research mentorship. Today, I'm returning to that field with a much broader background in quantum physics, developing quantum algorithms for computer-aided engineering and computational fluid dynamics.</p>
           <p>Outside of work, I love spending time outdoors and getting lost in the mountains, whether that's hiking, heading off on multi-day treks, tackling a via ferrata route or skiing in winter. When I can't escape to the mountains, I enjoy playing squash and indoor bouldering. I also love going to live musicals and concerts, getting creative with design, 3D printing and LEGO, getting lost in a good dystopian novel, or challenging myself with a puzzle or strategy board game.</p>
@@ -2032,7 +2050,7 @@ dialog::backdrop {
           <p class="paper-meta"><strong>A. Daria Dumitriu-I.</strong>, Feng Liu, Alexander E. Kazantsev, Alessandro Principi · arXiv · 2026</p>
         </div>
         <a href="https://arxiv.org/abs/2603.25705" target="_blank" rel="noopener noreferrer" class="paper-action">READ MORE HERE <span aria-hidden="true">↗</span></a>
-        <p class="paper-note placeholder">We study how interactions between electrons affect the sideways flow of heat and charge in a two-dimensional quantum system, even without an external magnetic field. After carefully removing contributions that do not represent actual transport, we find that the interacting thermoelectric Hall response unexpectedly remains non-zero as the temperature approaches absolute zero. We show that this surprising behaviour arises from quantum effects at extremely small length scales that influence the system's large-scale properties.</p>
+        <p class="paper-note placeholder">We study how interactions between electrons influence the sideways flow of heat and charge in a two-dimensional quantum system, even without an external magnetic field. After carefully removing contributions that do not represent actual transport, we find that the interacting thermoelectric Hall response unexpectedly remains non-zero as the temperature approaches absolute zero. We show that this surprising behaviour arises from quantum effects at extremely small length scales that influence the system's large-scale properties.</p>
       </article>
       <article class="paper">
         <span class="paper-ref">PAPER / 02</span>
@@ -2059,7 +2077,7 @@ dialog::backdrop {
           <p class="paper-meta"><strong>A. Daria Dumitriu-I.</strong>, Darius-A. Deaconu, Alexander E. Kazantsev, and Alessandro Principi · Physical Review B · 2024</p>
         </div>
         <a href="https://journals.aps.org/prb/abstract/10.1103/PhysRevB.109.165429" target="_blank" rel="noopener noreferrer" class="paper-action">READ MORE HERE <span aria-hidden="true">↗</span></a>
-        <p class="paper-note placeholder">We study how interactions between electrons affect the sideways flow of electrical current in a two-dimensional quantum system when there is no magnetic field applied. We show that these interactions do not alter the topological quantum behaviour expected at zero temperature in a fully gapped system, confirming a fundamental theoretical prediction. However, at finite temperatures or material doping, interactions cause the Hall response to decrease more rapidly than in the noninteracting case, with potentially observable experimental consequences.</p>
+        <p class="paper-note placeholder">We study how electron interactions affect transverse electrical transport phenomena in two-dimensional quantum system without an applied magnetic field. We show that these interactions do not alter the topological quantum behaviour expected at zero temperature in a fully gapped system, confirming a fundamental theoretical prediction. However, at finite temperatures or material doping, interactions cause the Hall response to decrease more rapidly than in the noninteracting case, with potentially observable experimental consequences.</p>
       </article>
     </div>
     <a href="#thesis" class="next-link shell">Next / PhD thesis <span aria-hidden="true">↓</span></a>
